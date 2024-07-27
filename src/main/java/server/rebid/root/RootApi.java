@@ -19,8 +19,8 @@ public class RootApi {
         return CommonResponse.onSuccess("Hello, world!");
     }
 
-    @GetMapping("/error")
-    public CommonResponse error() {
-        throw new GeneralException(GlobalErrorCode.SERVER_ERROR);
-    }
+//    @GetMapping("/error")
+//    public CommonResponse error() {
+//        throw new GeneralException(GlobalErrorCode.SERVER_ERROR);
+//    }
 }
