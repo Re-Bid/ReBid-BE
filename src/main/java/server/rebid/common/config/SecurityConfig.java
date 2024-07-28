@@ -2,13 +2,11 @@ package server.rebid.common.config;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,6 +32,9 @@ public class SecurityConfig{
     private final CustomSuccessHandler customSuccessHandler;
     private final JwtAuthFilter jwtAuthFilter;
 
+    @Value("${frontend.base-url}")
+    private String frontendBaseUrl;
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring().requestMatchers(
@@ -53,7 +54,7 @@ public class SecurityConfig{
     public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+            config.setAllowedOrigins(Collections.singletonList(frontendBaseUrl));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
             config.setAllowCredentials(true);
