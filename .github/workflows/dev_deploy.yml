@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest # (3).OS환경
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop' # (4).PR이 merge되고, base branch가 main일 때만 실행
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' # (4).PR이 merge되고, base branch가 main일 때만 실행
     steps:
       - name: Checkout #코드 가져오기
         uses: actions/checkout@v2 # (5).코드 check out
