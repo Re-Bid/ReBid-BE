@@ -61,3 +61,17 @@ backend:
 frontend:
   base-url: ${frontend.base_url}
   auth-redirect-url: ${frontend.auth_redirect_url}
+
+cloud:
+  aws:
+    s3:
+      bucket: elasticbeanstalk-ap-northeast-2-010928181446
+      #s3 bucket
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
