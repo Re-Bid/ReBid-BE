@@ -18,7 +18,7 @@ import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
 import server.rebid.entity.Member;
 import server.rebid.repository.MemberRepository;
-import server.rebid.service.MemberCommandService;
+import server.rebid.service.command.MemberCommandService;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
