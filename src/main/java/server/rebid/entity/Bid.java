@@ -6,7 +6,6 @@ import server.rebid.entity.enums.BidStatus;
 import server.rebid.entity.enums.BidType;
 import server.rebid.entity.enums.ConfirmStatus;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity

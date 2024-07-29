@@ -16,6 +16,7 @@ import server.rebid.dto.response.AdminBidResponse;
 @Tag(name = "[관리자] 승인 관련 API")
 public class AdminBidController {
 
+
     @Operation(summary = "승인 대기(pending), 승인 완료(confirm) 제품 조회하기", description = "page는 defualt가 1, size는 defualt가 15, status는 pending(승인 대기), confirm(승인 완료) 영어로 둘중 하나만 보내주세요!")
     @GetMapping("")
     public CommonResponse<AdminBidResponse.GetBidsPending> getBidsPending(
@@ -34,6 +35,7 @@ public class AdminBidController {
             @PathVariable(value = "bidId") Long bidId,
             @AuthenticationPrincipal CustomOAuth2User user
     ){
+
         return null;
     }
 

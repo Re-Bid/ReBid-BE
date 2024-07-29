@@ -34,7 +34,6 @@ public class MemberController {
         return CommonResponse.onSuccess(response);
     }
 
-
      //주소 입력
     @PostMapping("/address")
     @Operation(summary = "주소 변경")
@@ -52,6 +51,7 @@ public class MemberController {
     public CommonResponse<MyPageDTO> getMyPage(
             @AuthenticationPrincipal CustomOAuth2User user
     ){
+        memberQueryService.getMyPage(user.getMemberId());
         return null;
     }
 
