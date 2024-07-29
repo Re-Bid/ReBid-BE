@@ -12,6 +12,14 @@ public class BidResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class addBid {
+        private Long bidId;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class getBid {
 
         private Long bidId;
@@ -51,5 +59,13 @@ public class BidResponseDTO {
     @AllArgsConstructor
     public static class getRejectReason {
         private String rejectReason;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class addBidHistory {
+        private Long bidId;
     }
 }

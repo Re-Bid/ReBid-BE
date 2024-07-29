@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import server.rebid.common.CommonResponse;
+import server.rebid.dto.request.BidRequestDTO;
 import server.rebid.dto.response.BidResponseDTO;
 import server.rebid.service.BidService;
 
@@ -59,5 +60,22 @@ public class BidController {
             @RequestParam final String category
     ) {
         return CommonResponse.onSuccess(bidService.getBidsByCategory(category));
+    }
+
+    @PostMapping("/bids/sell")
+    @Operation(summary = "경매 등록하기 🔑", description = "제품을 경매에 등록합니다.")
+    public CommonResponse<BidResponseDTO.addBid> addBid(
+            @RequestBody final BidRequestDTO.addBid request
+    ) {
+        return CommonResponse.onSuccess(bidService.addBid(request));
+    }
+
+    @PostMapping("/{bidId}/buy")
+    @Operation(summary = "경매 입찰하기 🔑", description = "경매에 입찰합니다.")
+    public CommonResponse<BidResponseDTO.addBidHistory> addBidHistory(
+            @PathVariable final Long bidId,
+            @RequestBody final BidRequestDTO.addBidHistory request
+    ) {
+        return CommonResponse.onSuccess(null);
     }
 }

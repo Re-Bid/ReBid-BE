@@ -66,6 +66,8 @@ public enum GlobalErrorCode implements BaseErrorCode {
     // Bid + 404 Not Found - 찾을 수 없음
     BID_NOT_FOUND(NOT_FOUND, "BID404_1", "존재하지 않는 경매입니다."),
 
+    //Category + 404 Not Found - 찾을 수 없음
+    CATEGORY_NOT_FOUND(NOT_FOUND, "CATEGORY404_1", "존재하지 않는 카테고리입니다."),
     ;
 
 

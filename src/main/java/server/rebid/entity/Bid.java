@@ -7,6 +7,8 @@ import server.rebid.entity.enums.BidType;
 import server.rebid.entity.enums.ConfirmStatus;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,8 +34,9 @@ public class Bid extends BaseEntity {
 
     private String itemDescription; // 상품 설명
 
-    @Column(nullable = false)
-    private String imageUrl;  // 상품 이미지 URL
+    @JoinColumn(name = "item_image_id")
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<ItemImage> itemImages;  // 상품 이미지 URL
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
