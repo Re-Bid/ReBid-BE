@@ -12,6 +12,7 @@ import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.auth.service.CookieService;
 import server.rebid.auth.service.JwtService;
 import server.rebid.entity.enums.MemberRole;
+import server.rebid.service.MemberCommandService;
 
 import java.io.IOException;
 
@@ -20,9 +21,10 @@ import java.io.IOException;
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final CookieService cookieService;
+    private final MemberCommandService memberCommandService;
 
-    @Value("${frontend.auth-redirect-url}")
-    private String redirectUrl;
+    @Value("${frontend.base_url}")
+    private String frontendBaseUrl;
 
 
     @Override
@@ -35,6 +37,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String refreshToken = jwtService.createRefreshToken(memberId);
         response.addCookie(cookieService.createAccessTokenCookie(accessToken));
         response.addCookie(cookieService.createRefreshTokenCookie(refreshToken));
+
+        boolean isWritten = memberCommandService.isAddressWritten(memberId);
+        String redirectUrl = isWritten ? frontendBaseUrl+"/bids" : frontendBaseUrl+"/members/address";
+
         response.sendRedirect(redirectUrl);
     }
 }

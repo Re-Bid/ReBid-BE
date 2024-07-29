@@ -88,19 +88,23 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain jwtSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatchers(auth -> auth
-                        .requestMatchers(
-                                "/api/**"
-                        )
-                )
+//                .securityMatchers(auth -> auth
+//                        .requestMatchers(
+//                                "/member",
+//                                ""
+//                        )
+//                )
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/health","/hello").permitAll()
-//                        .anyRequest().authenticated())
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/oauth2/authorization/**",
+                                "/login/oauth2/code/**",
+                                "/health", "/hello"
+                                ).permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();

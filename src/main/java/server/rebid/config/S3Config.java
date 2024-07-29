@@ -1,4 +1,4 @@
-package server.rebid.common.config;
+package server.rebid.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
