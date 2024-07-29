@@ -23,4 +23,33 @@ public class BidService {
         List<Bid> bids = bidQueryService.findAll();
         return BidMapper.toGetBids(bids);
     }
+
+    public BidResponseDTO.getBidDetails getBidDetails(Long bidId) {
+        Bid bid = bidQueryService.findById(bidId);
+        return BidMapper.toGetBidDetails(bid);
+    }
+
+    public BidResponseDTO.getBids getRealTimeBids() {
+        List<Bid> bids = bidQueryService.getRealTimeBids();
+        return BidMapper.toGetBids(bids);
+    }
+
+    public BidResponseDTO.getBids getImminentBids() {
+        List<Bid> bids = bidQueryService.getImminentBids();
+        return BidMapper.toGetBids(bids);
+    }
+
+
+    public BidResponseDTO.getBids getBidsByCategory(String categoryName) {
+        List<Bid> bids = bidQueryService.getBidsByCategory(categoryName);
+        return BidMapper.toGetBids(bids);
+    }
+
+    public BidResponseDTO.getRejectReason getRejectReason(Long bidId) {
+        Bid bid = bidQueryService.findById(bidId);
+        String rejectReason = bid.getCancelReason();
+        return BidMapper.toGetRejectReason(rejectReason);
+    }
+
+
 }

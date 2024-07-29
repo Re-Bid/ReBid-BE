@@ -6,7 +6,6 @@ import server.rebid.entity.enums.BidStatus;
 import server.rebid.entity.enums.BidType;
 import server.rebid.entity.enums.ConfirmStatus;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,7 +26,11 @@ public class Bid extends BaseEntity {
     private Member member;
 
     @Column(nullable = false)
-    private String productName;  // 상품 이름
+    private String itemName;  // 상품 이름
+
+    private String itemIntro; // 상품 소개
+
+    private String itemDescription; // 상품 설명
 
     @Column(nullable = false)
     private String imageUrl;  // 상품 이미지 URL
