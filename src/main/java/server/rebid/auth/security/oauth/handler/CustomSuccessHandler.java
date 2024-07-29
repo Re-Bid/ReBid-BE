@@ -40,19 +40,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String refreshToken = jwtService.createRefreshToken(memberId);
         response.addCookie(cookieService.createAccessTokenCookie(accessToken));
         response.addCookie(cookieService.createRefreshTokenCookie(refreshToken));
-
-        // body
-//        String address = memberQueryService.getMemberAddress(memberId);
-//        response.setContentType("application/json");
-//        response.setCharacterEncoding("UTF-8");
-//
-//        Map<String, String> responseBody = new HashMap<>();
-//        responseBody.put("redirectUrl", redirectUrl);
-//        responseBody.put("address", address);
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        response.getWriter().write(objectMapper.writeValueAsString(responseBody));
-//
         response.sendRedirect(redirectUrl);
     }
 }

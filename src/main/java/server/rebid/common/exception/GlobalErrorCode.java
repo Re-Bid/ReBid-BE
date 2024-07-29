@@ -63,6 +63,11 @@ public enum GlobalErrorCode implements BaseErrorCode {
     PHONE_AUTH_WRONG(BAD_REQUEST, "NCP400_2", "잘못된 인증 번호 입니다."),
     PHONE_AUTH_TIMEOUT(BAD_REQUEST, "NCP400_3", "인증 시간이 초과되었습니다."),
 
+    // Bid + 404 Not Found - 찾을 수 없음
+    BID_NOT_FOUND(NOT_FOUND, "BID404_1", "존재하지 않는 경매입니다."),
+
+    //Category + 404 Not Found - 찾을 수 없음
+    CATEGORY_NOT_FOUND(NOT_FOUND, "CATEGORY404_1", "존재하지 않는 카테고리입니다."),
     ;
 
 
