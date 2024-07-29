@@ -16,8 +16,6 @@ public class BidCustomRepositoryImpl implements BidCustomRepository{
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-
-    // TODO
     @Override
     public List<Bid> getMemberSales(Long memberId) {
         QBid bid = QBid.bid;

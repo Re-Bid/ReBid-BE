@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.response.MemberResponse.IsMemberAddressWrittenDTO;
-import server.rebid.service.MemberCommandService;
+
 import server.rebid.service.MemberQueryService;
+import server.rebid.service.command.MemberCommandService;
 
 import static server.rebid.dto.request.MemberRequest.AddAddressDTO;
 import static server.rebid.dto.response.MemberResponse.MemberIdDTO;
@@ -51,8 +52,8 @@ public class MemberController {
     public CommonResponse<MyPageDTO> getMyPage(
             @AuthenticationPrincipal CustomOAuth2User user
     ){
-        memberQueryService.getMyPage(user.getMemberId());
-        return null;
+        MyPageDTO response = memberQueryService.getMyPage(user.getMemberId());
+        return CommonResponse.onSuccess(response);
     }
 
 

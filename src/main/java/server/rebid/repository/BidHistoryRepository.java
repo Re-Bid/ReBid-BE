@@ -17,7 +17,6 @@ public class BidHistoryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    //TODO
     public List<BidHistory> getMemberOrders(Long memberId){
         QBidHistory bidHistory = QBidHistory.bidHistory;
         QBid bid = QBid.bid;

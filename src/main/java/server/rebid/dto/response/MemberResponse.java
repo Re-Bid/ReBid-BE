@@ -24,7 +24,7 @@ public class MemberResponse {
         private Long memberId;
         private String nickname;
         private List<OrderInfo> orders;
-        private List<OrderInfo> sales;
+        private List<SaleInfo> sales;
     }
 
     @Getter
@@ -35,8 +35,20 @@ public class MemberResponse {
         private Long bidId;
         private String itemName;
         private String imageUrl;
-        private LocalDateTime bidTime;
         private Integer bidPrice;
+        private LocalDateTime bidTime;
+        private String bidStatus;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    public static class SaleInfo{
+        private Long bidId;
+        private String itemName;
+        private String imageUrl;
+        private LocalDateTime bidTime;
         private String bidStatus;
     }
 

@@ -1,6 +1,5 @@
 package server.rebid.auth.security.oauth.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,11 +12,8 @@ import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.auth.service.CookieService;
 import server.rebid.auth.service.JwtService;
 import server.rebid.entity.enums.MemberRole;
-import server.rebid.service.MemberQueryService;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
