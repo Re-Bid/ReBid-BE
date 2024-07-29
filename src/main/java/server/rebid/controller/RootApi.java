@@ -1,4 +1,4 @@
-package server.rebid.root;
+package server.rebid.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

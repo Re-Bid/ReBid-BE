@@ -3,7 +3,7 @@ package server.rebid.auth.security.oauth.dto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import server.rebid.member.entity.MemberRole;
+import server.rebid.entity.enums.MemberRole;
 
 import java.util.ArrayList;
 import java.util.Collection;

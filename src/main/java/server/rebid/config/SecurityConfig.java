@@ -1,4 +1,4 @@
-package server.rebid.common.config;
+package server.rebid.config;
 
 
 import lombok.RequiredArgsConstructor;

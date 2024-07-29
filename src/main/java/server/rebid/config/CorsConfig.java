@@ -1,4 +1,4 @@
-package server.rebid.common.config;
+package server.rebid.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

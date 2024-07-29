@@ -1,12 +1,12 @@
-package server.rebid.member.service;
+package server.rebid.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
-import server.rebid.member.entity.Member;
-import server.rebid.member.repository.MemberRepository;
+import server.rebid.entity.Member;
+import server.rebid.repository.MemberRepository;
 
 @Service
 @Transactional

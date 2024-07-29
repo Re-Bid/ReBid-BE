@@ -15,6 +15,8 @@ spring:
               - nickname
               - email
               - profile_image
+              - gender
+              - age
         provider:
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -49,8 +51,8 @@ spring:
 
 jwt:
   secret.key: ${jwt.secret.key}
-  access.exp : 7200
-  refresh.exp: 604800
+  access.exp : 18000
+  refresh.exp: 18000
 
 backend:
   base-url: ${backend.base-url}
