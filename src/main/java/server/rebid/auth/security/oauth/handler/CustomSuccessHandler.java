@@ -21,7 +21,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtService jwtService;
     private final CookieService cookieService;
 
-    @Value("${frontend.auth-redirect-url}")
+
+    @Value("${frontend.auth_redirect_url}")
     private String redirectUrl;
 
 
@@ -35,10 +36,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String refreshToken = jwtService.createRefreshToken(memberId);
         response.addCookie(cookieService.createAccessTokenCookie(accessToken));
         response.addCookie(cookieService.createRefreshTokenCookie(refreshToken));
-
-        // Authorization 헤더 설정
-        response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("Refresh-Token", refreshToken);
         response.sendRedirect(redirectUrl);
     }
 }

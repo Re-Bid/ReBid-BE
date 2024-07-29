@@ -43,4 +43,8 @@ public class Member {
     public void setRefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
     }
+
+    public void modifyAddress(String address){
+        this.address = address;
+    }
 }
