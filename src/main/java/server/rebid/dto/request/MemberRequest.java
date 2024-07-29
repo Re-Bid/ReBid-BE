@@ -13,5 +13,4 @@ public class MemberRequest {
         private String address;
     }
 
-
 }

@@ -1,5 +1,6 @@
 package server.rebid.auth.security.oauth.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,19 +13,21 @@ import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.auth.service.CookieService;
 import server.rebid.auth.service.JwtService;
 import server.rebid.entity.enums.MemberRole;
-import server.rebid.service.MemberCommandService;
+import server.rebid.service.MemberQueryService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final CookieService cookieService;
-    private final MemberCommandService memberCommandService;
 
-    @Value("${frontend.base_url}")
-    private String frontendBaseUrl;
+
+    @Value("${frontend.auth_redirect_url}")
+    private String redirectUrl;
 
 
     @Override
@@ -38,9 +41,18 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addCookie(cookieService.createAccessTokenCookie(accessToken));
         response.addCookie(cookieService.createRefreshTokenCookie(refreshToken));
 
-        boolean isWritten = memberCommandService.isAddressWritten(memberId);
-        String redirectUrl = isWritten ? frontendBaseUrl+"/bids" : frontendBaseUrl+"/members/address";
-
+        // body
+//        String address = memberQueryService.getMemberAddress(memberId);
+//        response.setContentType("application/json");
+//        response.setCharacterEncoding("UTF-8");
+//
+//        Map<String, String> responseBody = new HashMap<>();
+//        responseBody.put("redirectUrl", redirectUrl);
+//        responseBody.put("address", address);
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        response.getWriter().write(objectMapper.writeValueAsString(responseBody));
+//
         response.sendRedirect(redirectUrl);
     }
 }
