@@ -13,7 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.auth.security.oauth.dto.OAuth2UserDTO;
 import server.rebid.auth.service.JwtService;
-import server.rebid.member.entity.Member;
+import server.rebid.entity.Member;
 
 import java.io.IOException;
 

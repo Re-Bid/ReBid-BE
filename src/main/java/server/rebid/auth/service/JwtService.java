@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
-import server.rebid.member.entity.Member;
-import server.rebid.member.repository.MemberRepository;
-import server.rebid.member.service.MemberCommandService;
+import server.rebid.entity.Member;
+import server.rebid.repository.MemberRepository;
+import server.rebid.service.MemberCommandService;
 
 import javax.crypto.SecretKey;
 import java.util.Date;

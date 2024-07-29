@@ -11,9 +11,9 @@ import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.auth.security.oauth.dto.OAuth2Attributes;
 import server.rebid.auth.security.oauth.dto.OAuth2UserDTO;
 import server.rebid.auth.security.oauth.enums.SocialType;
-import server.rebid.member.entity.Member;
-import server.rebid.member.entity.MemberRole;
-import server.rebid.member.repository.MemberRepository;
+import server.rebid.entity.Member;
+import server.rebid.entity.enums.MemberRole;
+import server.rebid.repository.MemberRepository;
 
 import java.util.Map;
 
@@ -38,7 +38,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                             .nickname(oAuth2Attributes.getNickname())
                             .email(oAuth2Attributes.getEmail())
                             .profileImage(oAuth2Attributes.getProfileImage())
+                            .age(oAuth2Attributes.getAge())
+                            .gender(oAuth2Attributes.getGender())
                             .role(MemberRole.ROLE_USER)
+                            .isAllowed(Boolean.FALSE)
                             .build();
 
                     log.info("가입한 사용자 이메일: {}", newMember.getEmail());
