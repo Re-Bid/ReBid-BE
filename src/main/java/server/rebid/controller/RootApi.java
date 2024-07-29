@@ -1,4 +1,4 @@
-package server.rebid.root;
+package server.rebid.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

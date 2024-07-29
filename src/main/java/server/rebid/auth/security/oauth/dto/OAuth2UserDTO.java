@@ -2,8 +2,8 @@ package server.rebid.auth.security.oauth.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import server.rebid.member.entity.Member;
-import server.rebid.member.entity.MemberRole;
+import server.rebid.entity.Member;
+import server.rebid.entity.enums.MemberRole;
 
 @Getter
 public class OAuth2UserDTO {
