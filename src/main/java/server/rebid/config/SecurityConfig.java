@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import server.rebid.auth.security.filter.JwtAuthFilter;
 import server.rebid.auth.security.oauth.handler.CustomSuccessHandler;
 import server.rebid.auth.security.oauth.service.CustomOAuth2UserService;
@@ -53,15 +54,16 @@ public class SecurityConfig{
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        return request -> {
+
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Collections.singletonList(frontendBaseUrl));
+            config.setAllowedOrigins(Arrays.asList(frontendBaseUrl, backendBaseUrl));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
             config.setAllowCredentials(true);
             config.setMaxAge(3600L);
-            return config;
-        };
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", config);
+            return source;
     }
 
     @Bean
