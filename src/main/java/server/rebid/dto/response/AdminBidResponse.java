@@ -10,7 +10,7 @@ public class AdminBidResponse {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
-    public static class GetBidsPending{
+    public static class GetBidsByStatusDTO {
         private List<BidsInfo> bids;
     }
 
@@ -24,6 +24,30 @@ public class AdminBidResponse {
         private String imageUrl;
         private Integer startPrice;
         private String completeStatus;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    public static class BidIdDTO{
+        private Long bidId;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    public static class BidForAdminDTO{
+        private Long bidId;
+        private String itemName;
+        private List<String> imageUrl;
+        private String itemIntro;
+        private String itemDescription;
+        private Integer startPrice;
+        private String bidType;
+        private Boolean canReject;
+        private Boolean canConfirm;
     }
 
 }

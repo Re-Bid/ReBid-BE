@@ -7,7 +7,6 @@ import server.rebid.entity.enums.BidType;
 import server.rebid.entity.enums.ConfirmStatus;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -64,4 +63,20 @@ public class Bid extends BaseEntity {
 
     private LocalDateTime endDate;  // 입찰 완료 시간 (관리자가 입력, 실시간일 경우는 입찰 완료 시간 없음)
 
+
+    public void rejectBid(String rejectReason){
+        this.cancelReason = rejectReason;
+        this.confirmStatus = ConfirmStatus.REJECT_CONFIRM;
+    }
+
+    public void confirmRealTimeBid(LocalDateTime startDate){
+        this.startDate = startDate;
+        this.confirmStatus = ConfirmStatus.CONFIRM_CONFIRM;
+    }
+
+    public void confirmReservationBid(LocalDateTime startDate, LocalDateTime endDate){
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.confirmStatus = ConfirmStatus.CONFIRM_CONFIRM;
+    }
 }

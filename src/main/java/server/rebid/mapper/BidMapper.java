@@ -1,11 +1,17 @@
 package server.rebid.mapper;
 
 import server.rebid.dto.request.BidRequestDTO;
+import server.rebid.dto.response.AdminBidResponse;
+import server.rebid.dto.response.AdminBidResponse.BidForAdminDTO;
+import server.rebid.dto.response.AdminBidResponse.BidIdDTO;
+import server.rebid.dto.response.AdminBidResponse.BidsInfo;
+import server.rebid.dto.response.AdminBidResponse.GetBidsByStatusDTO;
 import server.rebid.dto.response.BidResponseDTO;
 import server.rebid.entity.Bid;
 import server.rebid.entity.Category;
 import server.rebid.entity.ItemImage;
 import server.rebid.entity.enums.BidType;
+import server.rebid.entity.enums.ConfirmStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +73,42 @@ public class BidMapper {
                 .currentPrice(null)
                 .endDate(bid.getEndDate())
                 .isHeart(null)
+                .build();
+    }
+
+    public static GetBidsByStatusDTO toGetBidsByStatusDTO(List<Bid> bids){
+        return GetBidsByStatusDTO.builder()
+                .bids(bids.stream().map(bid ->
+                                BidsInfo.builder()
+                                        .bidId(bid.getId())
+                                        .itemName(bid.getItemName())
+                                        .imageUrl(bid.getItemImages().get(0).getImageUrl())
+                                        .startPrice(bid.getStartingPrice())
+                                        .completeStatus(bid.getConfirmStatus().getDescription())
+                                        .build())
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    public static BidIdDTO toBidIdDTO(Long modifyBidId){
+        return BidIdDTO.builder()
+                .bidId(modifyBidId)
+                .build();
+    }
+
+    public static BidForAdminDTO toBidForAdminDTO(Bid bid){
+        return BidForAdminDTO.builder()
+                .bidId(bid.getId())
+                .itemName(bid.getItemName())
+                .imageUrl(
+                        bid.getItemImages().stream().map(ItemImage::getImageUrl).toList()
+                )
+                .itemIntro(bid.getItemIntro())
+                .itemDescription(bid.getItemDescription())
+                .startPrice(bid.getStartingPrice())
+                .bidType(bid.getBidType().getDescription())
+                .canReject(bid.getConfirmStatus().equals(ConfirmStatus.PENDING_CONFIRM))
+                .canConfirm(bid.getConfirmStatus().equals(ConfirmStatus.PENDING_CONFIRM))
                 .build();
     }
 }
