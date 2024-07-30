@@ -32,6 +32,7 @@ public class CookieService {
         cookie.setDomain(domain);
         cookie.setHttpOnly(false);
         cookie.setSecure(false);
+
         return cookie;
     }
 

@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import server.rebid.auth.security.filter.JwtAuthFilter;
 import server.rebid.auth.security.oauth.handler.CustomSuccessHandler;
 import server.rebid.auth.security.oauth.service.CustomOAuth2UserService;
@@ -55,11 +56,14 @@ public class SecurityConfig{
     public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Collections.singletonList(frontendBaseUrl));
+            config.setAllowedOrigins(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
             config.setAllowCredentials(true);
             config.setMaxAge(3600L);
+
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", config); // 모든 경로에 대해 CORS 설정 적용
             return config;
         };
     }
@@ -110,4 +114,5 @@ public class SecurityConfig{
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
+
 }
