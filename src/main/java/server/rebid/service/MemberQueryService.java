@@ -29,6 +29,10 @@ public class MemberQueryService {
     private final BidRepository bidRepository;
     private final MemberMapper memberMapper;
 
+    public Member findById(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
+    }
+
     public String getMemberAddress(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
         return member.getAddress();

@@ -20,6 +20,7 @@ public class BidRequestDTO {
         private String itemIntro;
         private String itemDescription;
         private List<String> imageUrls;
+        private LocalDateTime startDate;
         private LocalDateTime endDate;
     }
 

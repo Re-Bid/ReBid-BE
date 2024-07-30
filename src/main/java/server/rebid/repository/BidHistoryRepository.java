@@ -2,7 +2,9 @@ package server.rebid.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import server.rebid.entity.BidHistory;
 import server.rebid.entity.QBid;
 import server.rebid.entity.QBidHistory;
@@ -13,8 +15,22 @@ import java.util.List;
 public class BidHistoryRepository {
     private final JPAQueryFactory queryFactory;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public BidHistoryRepository(EntityManager em){
         this.queryFactory = new JPAQueryFactory(em);
+        this.entityManager = em;
+    }
+
+    @Transactional
+    public BidHistory save(BidHistory bidHistory) {
+        if (bidHistory.getId() == null) {
+            entityManager.persist(bidHistory);
+            return bidHistory;
+        } else {
+            return entityManager.merge(bidHistory);
+        }
     }
 
     public List<BidHistory> getMemberOrders(Long memberId){

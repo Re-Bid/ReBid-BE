@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum ConfirmStatus {
     PENDING_CONFIRM("승인 대기"),
     REJECT_CONFIRM("승인 거부"),
-    CONFIRM_CONFIRM("승인 완료")
+    COMPLETE_CONFIRM("승인 완료")
     ;
 
     private final String description;
