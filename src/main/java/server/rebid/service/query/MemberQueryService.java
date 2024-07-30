@@ -39,6 +39,11 @@ public class MemberQueryService {
         return IsMemberAddressWrittenDTO.builder().isAddressWritten(member.getAddress() != null).build();
     }
 
+    public boolean isMemberAddressWrittenV2(Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
+        return member.getAddress() != null;
+    }
+
     public MyPageDTO getMyPage(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
         // 주문 제품 확인

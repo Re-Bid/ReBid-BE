@@ -12,6 +12,7 @@ import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.auth.service.CookieService;
 import server.rebid.auth.service.JwtService;
 import server.rebid.entity.enums.MemberRole;
+import server.rebid.service.query.MemberQueryService;
 
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ import java.io.IOException;
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final CookieService cookieService;
+    private final MemberQueryService memberQueryService;
 
 
     @Value("${frontend.auth_redirect_url}")
@@ -31,11 +33,17 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
         Long memberId = customUserDetails.getMemberId();
         MemberRole role = customUserDetails.getRole();
-        // jwt 생성
+        boolean isWritten = memberQueryService.isMemberAddressWrittenV2(memberId);
+
+        // jwt 생성, 쿠키 설정
         String accessToken = jwtService.createAccessToken(memberId);
         String refreshToken = jwtService.createRefreshToken(memberId);
         response.addCookie(cookieService.createAccessTokenCookie(accessToken));
         response.addCookie(cookieService.createRefreshTokenCookie(refreshToken));
+        response.addCookie(cookieService.addAddressWrittenHeader(isWritten));
+
+
+
         response.sendRedirect(redirectUrl);
     }
 }
