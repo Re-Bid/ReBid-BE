@@ -35,9 +35,6 @@ public class SecurityConfig{
     @Value("${frontend.base_url}")
     private String frontendBaseUrl;
 
-    @Value("${backend.base_url")
-    private String backendBaseUrl;
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring().requestMatchers(
@@ -49,7 +46,8 @@ public class SecurityConfig{
                 new AntPathRequestMatcher("/h2-console/**"),
                 new AntPathRequestMatcher("/health"),
                 new AntPathRequestMatcher("/hello"),
-                new AntPathRequestMatcher("/error")
+                new AntPathRequestMatcher("/error"),
+                new AntPathRequestMatcher("/loading")
         );
     }
 
@@ -105,7 +103,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/oauth2/authorization/**",
                                 "/login/oauth2/code/**",
-                                "/health", "/hello", "/bids", "/bids/{bidId}", "/bids/real-time", "/bids/imminent", "/bids/category"
+                                "/health", "/hello", "/bids", "/bids/{bidId}", "/bids/real-time", "/bids/imminent", "/bids/category", "/loading"
                                 ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session
