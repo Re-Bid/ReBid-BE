@@ -56,8 +56,9 @@ public class SecurityConfig{
     public CorsConfigurationSource corsConfigurationSource() {
 
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOriginPatterns(Collections.singletonList("*")); // 모든 출처 허용
-            //config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://rebid-three.vercel.app"));
+
+            config.setAllowedOrigins(Collections.singletonList("*"));
+            config.setAllowedMethods(Collections.singletonList("*"));
             config.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
             config.setAllowCredentials(true);
             config.setMaxAge(3600L);
