@@ -27,7 +27,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${frontend.auth_redirect_url}")
     private String redirectUrl;
 
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
@@ -38,10 +37,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // jwt 생성, 쿠키 설정
         String accessToken = jwtService.createAccessToken(memberId);
         String refreshToken = jwtService.createRefreshToken(memberId);
+
         cookieService.createAccessTokenCookie(response, accessToken);
         cookieService.createRefreshTokenCookie(response, refreshToken);
         cookieService.addAddressWrittenHeader(response, isWritten);
-
 
         response.sendRedirect(redirectUrl);
     }

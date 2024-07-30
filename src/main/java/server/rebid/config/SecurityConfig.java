@@ -13,13 +13,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import server.rebid.auth.security.filter.JwtAuthFilter;
 import server.rebid.auth.security.oauth.handler.CustomSuccessHandler;
 import server.rebid.auth.security.oauth.service.CustomOAuth2UserService;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -105,7 +103,7 @@ public class SecurityConfig{
                         .requestMatchers("/oauth2/authorization/**",
                                 "/login/oauth2/code/**",
                                 "/health", "/hello", "/bids", "/bids/{bidId}", "/bids/real-time", "/bids/imminent", "/bids/category",
-                                "/bids/{bidId}/histories", "/imageTest"
+                                "/bids/{bidId}/histories", "/imageTest", "/bids/{bidId}/AiRecommend"
                                 ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session

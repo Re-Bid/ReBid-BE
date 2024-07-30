@@ -80,3 +80,7 @@ cloud:
     credentials:
       access-key: ${ACCESS_KEY}
       secret-key: ${SECRET_KEY}
+
+clova:
+  clovastudio: ${clova.clovastudio}
+  apigw: ${clova.apigw}
