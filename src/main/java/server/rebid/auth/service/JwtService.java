@@ -60,74 +60,74 @@ public class JwtService {
         return null;
     }
 
-    public String createAccessToken(Long memberId) {
-        return createToken(memberId, accessTokenExpiresIn, accessTokenSecret);
-    }
+//    public String createAccessToken(Long memberId) {
+//        return createToken(memberId, accessTokenExpiresIn, accessTokenSecret);
+//    }
+//
+//    public String createRefreshToken(Long memberId) {
+//        String refreshToken = createToken(memberId, refreshTokenExpiresIn, refreshTokenSecret);
+//        memberCommandService.setRefreshToken(memberId, refreshToken);
+//        return refreshToken;
+//    }
+//
+//    public boolean isAccessTokenExpired(String accessToken) throws GeneralException {
+//        return isTokenExpired(accessToken, accessTokenSecret);
+//    }
+//
+//    public boolean isRefreshTokenExpired(String refreshToken) throws GeneralException {
+//        return isTokenExpired(refreshToken, refreshTokenSecret);
+//    }
+//
+//    // 토큰에서 memberId 를 추출해 사용자를 가져온다.
+//    public Member getMemberFromAccessToken(String token) {
+//        Long memberId = getMemberIdFromAccessToken(token);
+//        return memberRepository.findById(memberId)
+//                .orElseThrow(() -> new GeneralException(GlobalErrorCode.AUTHENTICATION_DENIED));
+//    }
 
-    public String createRefreshToken(Long memberId) {
-        String refreshToken = createToken(memberId, refreshTokenExpiresIn, refreshTokenSecret);
-        memberCommandService.setRefreshToken(memberId, refreshToken);
-        return refreshToken;
-    }
-
-    public boolean isAccessTokenExpired(String accessToken) throws GeneralException {
-        return isTokenExpired(accessToken, accessTokenSecret);
-    }
-
-    public boolean isRefreshTokenExpired(String refreshToken) throws GeneralException {
-        return isTokenExpired(refreshToken, refreshTokenSecret);
-    }
-
-    // 토큰에서 memberId 를 추출해 사용자를 가져온다.
-    public Member getMemberFromAccessToken(String token) {
-        Long memberId = getMemberIdFromAccessToken(token);
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(GlobalErrorCode.AUTHENTICATION_DENIED));
-    }
-
-    // 토큰의 만료여부 검사 후 만료되지 않았다면 호출할 것
-    public Long getMemberIdFromAccessToken(String token) {
-        return Jwts.parser().verifyWith(accessTokenSecret).build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("memberId",Long.class);
-    }
-
-    public Long getMemberIdFromRefreshToken(String token) {
-        return Jwts.parser().verifyWith(refreshTokenSecret).build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("memberId",Long.class);
-    }
-
-
-    private boolean isTokenExpired(String token, SecretKey secretKey) {
-        try {
-            return Jwts.parser().verifyWith(secretKey).build()
-                    .parseSignedClaims(token)
-                    .getPayload()
-                    .getExpiration()
-                    .before(new Date());
-        } catch (JwtException e) {
-            if (e instanceof MalformedJwtException) {
-                log.warn("올바르지 않은 형식의 JWT 토큰: {}", e.getMessage());
-            } else if (e instanceof SignatureException) {
-                log.warn("JWT 서명이 일치하지 않음: {}", e.getMessage());
-            } else if (e instanceof UnsupportedJwtException) {
-                log.warn("토큰의 특정 헤더나 클레임이 지원되지 않음: {}", e.getMessage());
-            } else {
-                log.warn("JWT 만료기간 검사 처리 중 오류 발생: {}", e.getMessage());
-            }
-            throw new GeneralException(GlobalErrorCode.AUTHENTICATION_DENIED);
-        }
-    }
-
-    private String createToken(Long memberId, long expiresIn, SecretKey secretKey) {
-        return Jwts.builder()
-                .claim("memberId", memberId)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiresIn * 1000))
-                .signWith(secretKey, Jwts.SIG.HS256)
-                .compact();
-    }
+//    // 토큰의 만료여부 검사 후 만료되지 않았다면 호출할 것
+//    public Long getMemberIdFromAccessToken(String token) {
+//        return Jwts.parser().verifyWith(accessTokenSecret).build()
+//                .parseSignedClaims(token)
+//                .getPayload()
+//                .get("memberId",Long.class);
+//    }
+//
+//    public Long getMemberIdFromRefreshToken(String token) {
+//        return Jwts.parser().verifyWith(refreshTokenSecret).build()
+//                .parseSignedClaims(token)
+//                .getPayload()
+//                .get("memberId",Long.class);
+//    }
+//
+//
+//    private boolean isTokenExpired(String token, SecretKey secretKey) {
+//        try {
+//            return Jwts.parser().verifyWith(secretKey).build()
+//                    .parseSignedClaims(token)
+//                    .getPayload()
+//                    .getExpiration()
+//                    .before(new Date());
+//        } catch (JwtException e) {
+//            if (e instanceof MalformedJwtException) {
+//                log.warn("올바르지 않은 형식의 JWT 토큰: {}", e.getMessage());
+//            } else if (e instanceof SignatureException) {
+//                log.warn("JWT 서명이 일치하지 않음: {}", e.getMessage());
+//            } else if (e instanceof UnsupportedJwtException) {
+//                log.warn("토큰의 특정 헤더나 클레임이 지원되지 않음: {}", e.getMessage());
+//            } else {
+//                log.warn("JWT 만료기간 검사 처리 중 오류 발생: {}", e.getMessage());
+//            }
+//            throw new GeneralException(GlobalErrorCode.AUTHENTICATION_DENIED);
+//        }
+//    }
+//
+//    private String createToken(Long memberId, long expiresIn, SecretKey secretKey) {
+//        return Jwts.builder()
+//                .claim("memberId", memberId)
+//                .issuedAt(new Date(System.currentTimeMillis()))
+//                .expiration(new Date(System.currentTimeMillis() + expiresIn * 1000))
+//                .signWith(secretKey, Jwts.SIG.HS256)
+//                .compact();
+//    }
 }

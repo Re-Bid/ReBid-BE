@@ -1,20 +1,39 @@
 package server.rebid.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import server.rebid.dto.response.MemberResponse;
-import server.rebid.dto.response.MemberResponse.MyPageDTO;
-import server.rebid.dto.response.MemberResponse.OrderInfo;
-import server.rebid.dto.response.MemberResponse.SaleInfo;
+import server.rebid.dto.request.MemberRequestDTO;
+import server.rebid.dto.response.MemberResponseDTO;
+import server.rebid.dto.response.MemberResponseDTO.OrderInfo;
+import server.rebid.dto.response.MemberResponseDTO.SaleInfo;
 import server.rebid.entity.Bid;
 import server.rebid.entity.BidHistory;
 import server.rebid.entity.Member;
 import server.rebid.entity.enums.BidStatus;
+import server.rebid.entity.enums.MemberRole;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class MemberMapper {
-    public List<OrderInfo> mapMemberOrder(List<BidHistory> dto){
+
+    public static MemberResponseDTO.signup toSignup(Member savedMember) {
+        return MemberResponseDTO.signup.builder()
+                .memberId(savedMember.getId())
+                .build();
+    }
+
+    public static MemberResponseDTO.login toLogin(Member member, String accessToken, String refreshToken) {
+        return MemberResponseDTO.login.builder()
+                .memberId(member.getId())
+                .nickname(member.getNickname())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    public static List<OrderInfo> mapMemberOrder(List<BidHistory> dto){
         return dto.stream().map(d ->
                         OrderInfo.builder()
                                 .bidId(d.getBid().getId())
@@ -27,7 +46,7 @@ public class MemberMapper {
                 .toList();
     }
 
-    public List<SaleInfo> mapMemberSale(List<Bid> dto){
+    public static List<SaleInfo> mapMemberSale(List<Bid> dto){
         return dto.stream().map(d ->
                 SaleInfo.builder()
                         .bidId(d.getId())
@@ -39,12 +58,22 @@ public class MemberMapper {
                 .toList();
     }
 
-    public MyPageDTO toMyPageDTO(Member member, List<OrderInfo> orderInfos, List<SaleInfo> saleInfos){
-        return MyPageDTO.builder()
+    public static MemberResponseDTO.myPage toMyPage(Member member, List<OrderInfo> orderInfos, List<SaleInfo> saleInfos){
+        return MemberResponseDTO.myPage.builder()
                 .memberId(member.getId())
                 .nickname(member.getNickname())
                 .orders(orderInfos)
                 .sales(saleInfos)
+                .build();
+    }
+
+    public static Member toMember(MemberRequestDTO.signup request, String password){
+        return Member.builder()
+                .nickname(request.getNickname())
+                .email(request.getEmail())
+                .password(password)
+                .isAllowed(true)
+                .role(MemberRole.ROLE_USER)
                 .build();
     }
 }

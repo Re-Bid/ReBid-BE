@@ -5,9 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
-import server.rebid.dto.response.MemberResponse.MyPageDTO;
-import server.rebid.dto.response.MemberResponse.OrderInfo;
-import server.rebid.dto.response.MemberResponse.SaleInfo;
+import server.rebid.dto.response.MemberResponseDTO.OrderInfo;
+import server.rebid.dto.response.MemberResponseDTO.SaleInfo;
 import server.rebid.entity.Bid;
 import server.rebid.entity.BidHistory;
 import server.rebid.entity.Member;
@@ -17,8 +16,9 @@ import server.rebid.repository.BidRepository;
 import server.rebid.repository.MemberRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-import static server.rebid.dto.response.MemberResponse.IsMemberAddressWrittenDTO;
+import static server.rebid.dto.response.MemberResponseDTO.IsMemberAddressWrittenDTO;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,6 +29,9 @@ public class MemberQueryService {
     private final BidRepository bidRepository;
     private final MemberMapper memberMapper;
 
+    public Boolean isMemberExist(Long memberId) {
+        return memberRepository.existsById(memberId);
+    }
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
     }
@@ -48,15 +51,7 @@ public class MemberQueryService {
         return member.getAddress() != null;
     }
 
-    public MyPageDTO getMyPage(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
-        // 주문 제품 확인
-        List<BidHistory> orders = bidHistoryRepository.getMemberOrders(memberId);
-        // 판매 제품 확인
-        List<Bid> sales = bidRepository.getMemberSales(memberId);
-        // 전체 매핑
-        List<OrderInfo> orderInfos = memberMapper.mapMemberOrder(orders);
-        List<SaleInfo> saleInfos = memberMapper.mapMemberSale(sales);
-        return memberMapper.toMyPageDTO(member, orderInfos, saleInfos);
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
     }
 }

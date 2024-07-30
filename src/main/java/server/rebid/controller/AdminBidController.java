@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.AdminBidRequest.ConfirmRealTimeBid;
 import server.rebid.dto.request.AdminBidRequest.ConfirmReservationBid;
@@ -28,20 +27,18 @@ public class AdminBidController {
     public CommonResponse<GetBidsByStatusDTO> getBidsPending(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "size", defaultValue = "15") Integer size,
-            @RequestParam(value = "status") String status,
-            @AuthenticationPrincipal CustomOAuth2User user
+            @RequestParam(value = "status") String status
     ){
-        GetBidsByStatusDTO response = bidService.getBidsByStatus(page, size, status, user.getRole());
+        GetBidsByStatusDTO response = bidService.getBidsByStatus(page, size, status);
         return CommonResponse.onSuccess(response);
     }
 
     @Operation(summary = "관리자 페이지 상품 조회")
     @GetMapping("/{bidId}")
     public CommonResponse<BidForAdminDTO> getBidForAdmin(
-            @PathVariable("bidId") Long bidId,
-            @AuthenticationPrincipal CustomOAuth2User user
+            @PathVariable("bidId") Long bidId
     ){
-        BidForAdminDTO response = bidService.getBidForAdmin(bidId, user.getRole());
+        BidForAdminDTO response = bidService.getBidForAdmin(bidId);
         return CommonResponse.onSuccess(response);
     }
 
@@ -50,10 +47,9 @@ public class AdminBidController {
     @PutMapping("/{bidId}/reject")
     public CommonResponse<BidIdDTO> rejectBid(
             @PathVariable(value = "bidId") Long bidId,
-            @RequestBody RejectBidDTO requestDTO,
-            @AuthenticationPrincipal CustomOAuth2User user
+            @RequestBody RejectBidDTO requestDTO
     ){
-        BidIdDTO response = bidService.rejectBid(bidId, user.getRole(), requestDTO.getRejectReason());
+        BidIdDTO response = bidService.rejectBid(bidId, requestDTO.getRejectReason());
         return CommonResponse.onSuccess(response);
     }
 
@@ -61,10 +57,9 @@ public class AdminBidController {
     @PutMapping("/{bidId}/confirm/realTime")
     public CommonResponse<BidIdDTO> confirmRealTimeBid(
             @PathVariable(value = "bidId") Long bidId,
-            @RequestBody ConfirmRealTimeBid requestDTO,
-            @AuthenticationPrincipal CustomOAuth2User user
+            @RequestBody ConfirmRealTimeBid requestDTO
     ){
-        BidIdDTO response = bidService.confirmRealTimeBid(bidId, user.getRole(), requestDTO);
+        BidIdDTO response = bidService.confirmRealTimeBid(bidId, requestDTO);
         return CommonResponse.onSuccess(response);
     }
 
@@ -72,10 +67,9 @@ public class AdminBidController {
     @PutMapping("/{bidId}/confirm/reservation")
     public CommonResponse<BidIdDTO> confirmReservationBid(
             @PathVariable(value = "bidId") Long bidId,
-            @RequestBody ConfirmReservationBid requestDTO,
-            @AuthenticationPrincipal CustomOAuth2User user
+            @RequestBody ConfirmReservationBid requestDTO
     ){
-        BidIdDTO response = bidService.confirmReservationBid(bidId, user.getRole(), requestDTO);
+        BidIdDTO response = bidService.confirmReservationBid(bidId, requestDTO);
         return CommonResponse.onSuccess(response);
     }
 
