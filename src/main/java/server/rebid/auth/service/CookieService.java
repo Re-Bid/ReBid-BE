@@ -23,6 +23,8 @@ public class CookieService {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .maxAge(maxAge)
                 .path("/")
+                .domain(domain)
+                .httpOnly(false)
                 .secure(true)
                 .sameSite("None")
                 .build();
