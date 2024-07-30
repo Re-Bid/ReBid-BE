@@ -1,5 +1,6 @@
 package server.rebid.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ChatResponse {
     private Status status;
     private Result result;
@@ -16,6 +18,7 @@ public class ChatResponse {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Status {
         private String code;
         private String message;
@@ -25,6 +28,7 @@ public class ChatResponse {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Result {
         private Message message;
         private String stopReason;
@@ -38,6 +42,7 @@ public class ChatResponse {
         @Builder
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         @AllArgsConstructor
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Message {
             private String role;
             private String content;
@@ -47,13 +52,13 @@ public class ChatResponse {
         @Builder
         @NoArgsConstructor(access = AccessLevel.PROTECTED)
         @AllArgsConstructor
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public static class AiFilter {
             private String groupName;
             private String name;
             private String score;
-
-            // Getters and Setters
         }
+
     }
 
 }

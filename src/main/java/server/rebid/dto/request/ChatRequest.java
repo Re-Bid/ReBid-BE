@@ -14,7 +14,7 @@ public class ChatRequest {
     private Integer topK;
     private Double topP;
     private Double repeatPenalty;
-    private String stopBefore;
+    private List<String> stopBefore;
     private Integer maxTokens;
     private Boolean includeAiFilters;
     private Integer seed;
@@ -24,7 +24,7 @@ public class ChatRequest {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatMessage{
-        private ChatType role;
+        private String role;
         private String content;
     }
 }

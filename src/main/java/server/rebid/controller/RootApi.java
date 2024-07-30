@@ -31,9 +31,16 @@ public class RootApi {
 
     @PostMapping("/imageTest")
     public CommonResponse imageTest(
-            @RequestPart MultipartFile image
+            @RequestPart("image") MultipartFile image
             ) throws IOException {
         return CommonResponse.onSuccess(imageService.uploadImage(image));
     }
+
+//    @PostMapping("/imageCheck")
+//    public CommonResponse<NaverResponseDTO.imageCheck> imageCheck(
+//            @RequestPart("image") MultipartFile image
+//    ) throws IOException {
+//        return CommonResponse.onSuccess(imageService.checkImage(image));
+//    }
 
 }

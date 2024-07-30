@@ -3,6 +3,7 @@ package server.rebid.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
@@ -12,6 +13,7 @@ import server.rebid.dto.request.BidRequestDTO;
 import server.rebid.dto.response.AdminBidResponse.BidForAdminDTO;
 import server.rebid.dto.response.AdminBidResponse.BidIdDTO;
 import server.rebid.dto.response.AdminBidResponse.GetBidsByStatusDTO;
+import server.rebid.dto.response.BidHistoryResponseDTO;
 import server.rebid.dto.response.BidResponseDTO;
 import server.rebid.dto.response.BidResponseDTO.getRejectReason;
 import server.rebid.entity.*;
@@ -50,6 +52,7 @@ public class BidService {
     private final HeartCommandService heartCommandService;
     private final HeartQueryService heartQueryService;
 
+    @Transactional
     public BidResponseDTO.addBid addBid(CustomOAuth2User user, BidRequestDTO.addBid request) {
         Category category = categoryQueryService.findByName(request.getCategory());
         Member member = memberQueryService.findById(user.getMemberId());
@@ -63,11 +66,13 @@ public class BidService {
         return BidMapper.toAddBid(savedBid);
     }
 
+    @Transactional(readOnly = true)
     public BidResponseDTO.getBids getBids() {
         List<Bid> bids = bidQueryService.findAll();
         return BidMapper.toGetBids(bids);
     }
 
+    @Transactional(readOnly = true)
     public BidResponseDTO.getBidDetails getBidDetails(CustomOAuth2User user, Long bidId) {
         Member member = memberQueryService.findById(user.getMemberId());
         Bid bid = bidQueryService.findById(bidId);
@@ -78,28 +83,27 @@ public class BidService {
         return BidMapper.toGetBidDetails(bid, imageUrls, isHeart);
     }
 
-    public BidResponseDTO.getBids getRealTimeBids() {
-        List<Bid> bids = bidQueryService.getRealTimeBids();
-        return BidMapper.toGetBids(bids);
-    }
 
+    @Transactional(readOnly = true)
     public BidResponseDTO.getBids getImminentBids() {
         List<Bid> bids = bidQueryService.getImminentBids();
         return BidMapper.toGetBids(bids);
     }
 
-
+    @Transactional(readOnly = true)
     public BidResponseDTO.getBids getBidsByCategory(String categoryName) {
         List<Bid> bids = bidQueryService.getBidsByCategory(categoryName);
         return BidMapper.toGetBids(bids);
     }
 
+    @Transactional(readOnly = true)
     public getRejectReason getRejectReason(Long bidId) {
         Bid bid = bidQueryService.findById(bidId);
         String rejectReason = bid.getCancelReason();
         return BidMapper.toGetRejectReason(rejectReason);
     }
 
+    @Transactional
     public BidResponseDTO.addBidHistory addBidHistory(CustomOAuth2User user, Long bidId, BidRequestDTO.addBidHistory request) {
         Member member = memberQueryService.findById(user.getMemberId());
         Bid bid = bidQueryService.findById(bidId);
@@ -120,6 +124,7 @@ public class BidService {
     /**
      * 승인 대기 중인 제품 조회
      */
+    @Transactional(readOnly = true)
     public GetBidsByStatusDTO getBidsByStatus(Integer page, Integer size, String status, MemberRole role) {
         List<Bid> bids = bidQueryService.getBidsByStatus(page, size, status, role);
         return BidMapper.toGetBidsByStatusDTO(bids);
@@ -128,6 +133,7 @@ public class BidService {
     /**
      * 상품 승인 반려하기
      */
+    @Transactional
     public BidIdDTO rejectBid(Long bidId, MemberRole role, String rejectReason) {
         Long modifyBidId = bidCommandService.rejectBid(bidId, role, rejectReason);
         return BidMapper.toBidIdDTO(bidId);
@@ -136,6 +142,7 @@ public class BidService {
     /**
      * (실시간) 상품 승인 하기
      */
+    @Transactional
     public BidIdDTO confirmRealTimeBid(Long bidId, MemberRole role, ConfirmRealTimeBid requestDTO) {
         Long modifyBidId = bidCommandService.confirmRealTime(bidId, role, requestDTO);
         return BidMapper.toBidIdDTO(bidId);
@@ -144,6 +151,7 @@ public class BidService {
     /**
      * (기간 경매) 상품 승인 하기
      */
+    @Transactional
     public BidIdDTO confirmReservationBid(Long bidId, MemberRole role, AdminBidRequest.ConfirmReservationBid requestDTO) {
         Long modifyBidId = bidCommandService.confirmReservationBid(bidId, role, requestDTO);
         return BidMapper.toBidIdDTO(bidId);
@@ -152,12 +160,13 @@ public class BidService {
     /**
      * 관리자 제품 상세 화면
      */
+    @Transactional(readOnly = true)
     public BidForAdminDTO getBidForAdmin(Long bidId, MemberRole role) {
         Bid bid = bidQueryService.getBidForAdmin(bidId, role);
         return BidMapper.toBidForAdminDTO(bid);
     }
 
-
+    @Transactional
     public BidResponseDTO.addHeart addHeart(CustomOAuth2User user, Long bidId) {
         Member member = memberQueryService.findById(user.getMemberId());
         Bid bid = bidQueryService.findById(bidId);
@@ -170,5 +179,20 @@ public class BidService {
         Heart heart = HeartMapper.toHeart(member, bid);
         Heart savedHeart = heartCommandService.addHeart(heart);
         return HeartMapper.toAddHeart(bid, true);
+    }
+
+    public BidResponseDTO.getBidDetails getBidDetailsWithOutUser(Long bidId) {
+        Bid bid = bidQueryService.findById(bidId);
+        List<String> imageUrls = bid.getItemImages().stream()
+                .map(ItemImage::getImageUrl)
+                .collect(Collectors.toList());
+
+        return BidMapper.toGetBidDetails(bid, imageUrls, false);
+    }
+
+    public BidHistoryResponseDTO.getBidHistories getBidHistories(Long bidId) {
+        Bid bid = bidQueryService.findById(bidId);
+        List<BidHistory> bidHistories = bid.getBidHistories();
+        return BidMapper.toGetBidHistories(bidHistories);
     }
 }

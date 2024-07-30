@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.BidRequestDTO;
+import server.rebid.dto.response.BidHistoryResponseDTO;
 import server.rebid.dto.response.BidResponseDTO;
 import server.rebid.dto.response.ChatMemberResponse;
-import server.rebid.dto.response.ChatResponse;
 import server.rebid.service.BidService;
 import server.rebid.service.command.BidHistoryCommandService;
 
@@ -36,14 +36,20 @@ public class BidController {
             @AuthenticationPrincipal final CustomOAuth2User user,
             @PathVariable final Long bidId
     ) {
+        if (user == null) {
+            // 토큰이 존재하지 않는 경우의 처리
+            return CommonResponse.onSuccess(bidService.getBidDetailsWithOutUser(bidId));
+        }
+        // 토큰이 존재하는 경우의 처리
         return CommonResponse.onSuccess(bidService.getBidDetails(user, bidId));
     }
 
-    @GetMapping("/real-time")
-    @Operation(summary = "실시간 경매 목록 조회 🔑", description = "현재 진행중인 실시간 경매 목록을 조회합니다.")
-    public CommonResponse<BidResponseDTO.getBids> getRealTimeBids(
+    @GetMapping("/{bidId}/histories")
+    @Operation(summary = "경매 입찰 내역 조회", description = "경매 입찰 내역을 조회합니다.")
+    public CommonResponse<BidHistoryResponseDTO.getBidHistories> getBidHistories(
+            @PathVariable final Long bidId
     ) {
-        return CommonResponse.onSuccess(bidService.getRealTimeBids());
+        return CommonResponse.onSuccess(bidService.getBidHistories(bidId));
     }
 
     @GetMapping("/imminent")

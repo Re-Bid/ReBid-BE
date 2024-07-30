@@ -1,11 +1,15 @@
 package server.rebid.service.command;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import server.rebid.common.CommonResponse;
 import server.rebid.common.exception.GeneralException;
@@ -17,7 +21,6 @@ import server.rebid.dto.response.ChatResponse;
 import server.rebid.entity.Bid;
 import server.rebid.entity.BidHistory;
 import server.rebid.repository.BidHistoryRepository;
-import org.springframework.http.HttpHeaders;
 import server.rebid.repository.BidRepository;
 
 import java.util.Collections;
@@ -26,17 +29,18 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class BidHistoryCommandService {
 
     private final BidHistoryRepository bidHistoryRepository;
     private final BidRepository bidRepository;
-    private final RestTemplate restTemplate;
 
     @Value("${clova.clovastudio}")
     private String clovaStudio;
 
-    @Value("{clova.apigw}")
+    @Value("${clova.apigw}")
     private String APIGW;
 
     public BidHistory addBidHistory(BidHistory bidHistory) {
@@ -44,6 +48,8 @@ public class BidHistoryCommandService {
     }
 
     public CommonResponse<ChatMemberResponse> aiRecommendNextPrice(Long bidId) {
+        RestTemplate restTemplate = new RestTemplate();
+
         Bid bid = bidRepository.findById(bidId).orElseThrow(() -> new GeneralException(GlobalErrorCode.BID_NOT_FOUND));
         List<BidHistory> bidHistories = bidHistoryRepository.getBidHistory(bidId);
         String maxPrice = bidHistories.size() > 0 ? bidHistories.get(bidHistories.size()-1).getPrice().toString() : bid.getStartingPrice().toString();
@@ -51,7 +57,7 @@ public class BidHistoryCommandService {
                 .map(bidHistory -> String.valueOf(bidHistory.getPrice()))
                 .collect(Collectors.joining(" -> ")): "없음";
 
-        ChatType role = ChatType.valueOf("system");
+        String role = "system";
         String message = "안녕! 너는 온라인 경매사야. 채팅의 시작 메시지는 \"안녕하세요! 저는 당신의 경매를 도와줄 [안녕맨] 입니다!\"로 시작해줘. 너는 사용자에게 제품을 사기 위해 다음 경매 가격을 추천해주는 역할을 가지고 있어." +
                 "너는 \"경매 제품은 " + bid.getItemName() +" 이고, 현재 경매 최고가는 " +  maxPrice + "입니다\"로 말을 하고 경매를 시작해." +
                 "너에게는 지금까지 제품의 경매 가격 내역이 주어질꺼야. 만약 경매 내역이 없으면 \"경매 내역이 없습니다. 경매에 참여해보세요!\"라고 작성해줘." +
@@ -63,32 +69,55 @@ public class BidHistoryCommandService {
                 .content(message)
                 .build();
         ChatRequest request = ChatRequest.builder()
-                .messages((List<ChatRequest.ChatMessage>) Collections.singleton(chatRequest))
+                .messages(Collections.singletonList(chatRequest))
+                .temperature(0.05)
+                .topK(0)
+                .topP(0.8)
+                .repeatPenalty(5.0)
+                .stopBefore(Collections.emptyList())
+                .maxTokens(100)
+                .includeAiFilters(false)
+                .seed(0)
                 .build();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        headers.add("X-NCP-CLOVASTUDIO-API-KEY", clovaStudio);
-        headers.add("X-NCP-APIGW-API-KEY", APIGW);
+        headers.set("Content-Type", "application/json");
+        headers.set("X-NCP-CLOVASTUDIO-API-KEY", clovaStudio);
+        headers.set("X-NCP-APIGW-API-KEY", APIGW);
+        headers.set("X-NCP-CLOVASTUDIO-REQUEST-ID", "f119aabf-b4e1-4adc-8b82-03d8368cd49a");
 
         String url = "https://clovastudio.stream.ntruss.com/testapp/v1/chat-completions/HCX-003";
 
+        // 요청 보내기 전에 로그 추가
+        log.info("Sending request to URL: " + url);
+        log.info("Headers: " + headers);
+
+
         // 요청 보내기
         HttpEntity<ChatRequest> requestEntity = new HttpEntity<>(request, headers);
-        ResponseEntity<ChatResponse> response = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                requestEntity,
-                ChatResponse.class
-        );
+        try {
+            ResponseEntity<ChatResponse> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    requestEntity,
+                    ChatResponse.class
+            );
 
-        ChatMemberResponse postResponse = ChatMemberResponse.builder()
-                .message(Objects.requireNonNull(response.getBody()).getResult().getMessage().getContent())
-                .build();
-        if(response.getStatusCode().is2xxSuccessful()){
-            return CommonResponse.onSuccess(postResponse);
-        } else{
-                throw new GeneralException(GlobalErrorCode.SERVER_ERROR);
+            // 응답 데이터 로그로 출력
+            log.info("Response Body: " + response.getBody());
+
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                ChatMemberResponse postResponse = ChatMemberResponse.builder()
+                        .message(response.getBody().getResult().getMessage().getContent())
+                        .build();
+                return CommonResponse.onSuccess(postResponse);
+            } else {
+                throw new GeneralException(GlobalErrorCode.REST_TEMPLATE_FAIL1);
+            }
+        } catch (Exception e) {
+            log.error("Error during REST call", e);
+            throw new GeneralException(GlobalErrorCode.REST_TEMPLATE_FAIL2);
         }
     }
+
 }

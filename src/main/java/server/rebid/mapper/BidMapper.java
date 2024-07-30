@@ -6,6 +6,7 @@ import server.rebid.dto.response.AdminBidResponse.BidForAdminDTO;
 import server.rebid.dto.response.AdminBidResponse.BidIdDTO;
 import server.rebid.dto.response.AdminBidResponse.BidsInfo;
 import server.rebid.dto.response.AdminBidResponse.GetBidsByStatusDTO;
+import server.rebid.dto.response.BidHistoryResponseDTO;
 import server.rebid.dto.response.BidResponseDTO;
 import server.rebid.entity.*;
 import server.rebid.entity.enums.BidType;
@@ -19,7 +20,6 @@ public class BidMapper {
     public static Bid toBid(Member member, BidRequestDTO.addBid request, Category category) {
         return Bid.builder()
                 .itemName(request.getItemName())
-                .bidType(BidType.valueOf(request.getBidType()))
                 .bidCode(generateBidCode())
                 .category(category)
                 .member(member)
@@ -78,7 +78,6 @@ public class BidMapper {
 
         return BidResponseDTO.getBidDetails.builder()
                 .bidId(bid.getId())
-                .bidType(String.valueOf(bid.getBidType()))
                 .itemName(bid.getItemName())
                 .itemIntro(bid.getItemIntro())
                 .itemDescription(bid.getItemDescription())
@@ -120,7 +119,6 @@ public class BidMapper {
                 .itemIntro(bid.getItemIntro())
                 .itemDescription(bid.getItemDescription())
                 .startPrice(bid.getStartingPrice())
-                .bidType(bid.getBidType().getDescription())
                 .canReject(bid.getConfirmStatus().equals(ConfirmStatus.PENDING_CONFIRM))
                 .canConfirm(bid.getConfirmStatus().equals(ConfirmStatus.PENDING_CONFIRM))
                 .build();
@@ -136,6 +134,21 @@ public class BidMapper {
     public static BidResponseDTO.addBidHistory toAddBidHistory(BidHistory savedBidHistory) {
         return BidResponseDTO.addBidHistory.builder()
                 .bidId(savedBidHistory.getBid().getId())
+                .build();
+    }
+
+    public static BidHistoryResponseDTO.getBidHistory toGetBidHistory(BidHistory bidHistory) {
+        return BidHistoryResponseDTO.getBidHistory.builder()
+                .bidHistoryId(bidHistory.getId())
+                .price(bidHistory.getPrice())
+                .memberName(bidHistory.getMember().getNickname())
+                .createdAt(bidHistory.getCreatedAt())
+                .build();
+    }
+
+    public static BidHistoryResponseDTO.getBidHistories toGetBidHistories(List<BidHistory> bidHistories) {
+        return BidHistoryResponseDTO.getBidHistories.builder()
+                .bidHistories(bidHistories.stream().map(BidMapper::toGetBidHistory).collect(Collectors.toList()))
                 .build();
     }
 

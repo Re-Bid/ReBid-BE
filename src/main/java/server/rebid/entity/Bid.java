@@ -42,10 +42,6 @@ public class Bid extends BaseEntity {
     @OneToMany(mappedBy = "bid", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BidHistory> bidHistories = new ArrayList<>();  // 입찰 내역
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private BidType bidType;  // 경매 유형
-
     @Column(nullable = false)
     private Integer startingPrice; // 시작 가격
 

@@ -38,9 +38,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // jwt 생성, 쿠키 설정
         String accessToken = jwtService.createAccessToken(memberId);
         String refreshToken = jwtService.createRefreshToken(memberId);
-        response.addCookie(cookieService.createAccessTokenCookie(accessToken));
-        response.addCookie(cookieService.createRefreshTokenCookie(refreshToken));
-        response.addCookie(cookieService.addAddressWrittenHeader(isWritten));
+
+        cookieService.createAccessTokenCookie(response, accessToken);
+        cookieService.createRefreshTokenCookie(response, refreshToken);
+        cookieService.addAddressWrittenHeader(response, isWritten);
 
         response.sendRedirect(redirectUrl);
     }
