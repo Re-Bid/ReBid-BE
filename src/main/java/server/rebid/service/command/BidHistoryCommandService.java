@@ -81,7 +81,6 @@ public class BidHistoryCommandService {
         headers.set("Content-Type", "application/json");
         headers.set("X-NCP-CLOVASTUDIO-API-KEY", clovaStudio);
         headers.set("X-NCP-APIGW-API-KEY", APIGW);
-        headers.set("X-NCP-CLOVASTUDIO-REQUEST-ID", "f119aabf-b4e1-4adc-8b82-03d8368cd49a");
 
         String url = "https://clovastudio.stream.ntruss.com/testapp/v1/chat-completions/HCX-003";
 
