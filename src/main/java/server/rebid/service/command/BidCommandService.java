@@ -62,7 +62,7 @@ public class BidCommandService {
 
     private Bid checkBidPending(Long bidId){
         Bid bid = bidRepository.findById(bidId).orElseThrow(() -> new GeneralException(GlobalErrorCode.BID_NOT_FOUND));
-        if(bid.getConfirmStatus().equals(ConfirmStatus.CONFIRM_CONFIRM)){
+        if(bid.getConfirmStatus().equals(ConfirmStatus.COMPLETE_CONFIRM)){
             throw new GeneralException(GlobalErrorCode.BID_ALREADY_CONFIRM);
         } else if(bid.getConfirmStatus().equals(ConfirmStatus.REJECT_CONFIRM)){
             throw new GeneralException(GlobalErrorCode.BID_ALREADY_REJECT);

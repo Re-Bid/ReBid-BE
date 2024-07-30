@@ -17,6 +17,7 @@ import io.swagger.v3.oas.models.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,17 @@ public class SwaggerConfig {
         Server server = new Server();
         server.setUrl(backendBaseURL);
         server.setDescription("ReBid Server API");
+
+//        Map<String, PathItem> paths = Map.of(
+//                "/bids", new PathItem().post(new Operation().security(List.of(new SecurityRequirement()))),
+//                "/bids/{bidId}", new PathItem().post(new Operation().security(List.of(new SecurityRequirement()))),
+//                "/bids/real-time", new PathItem().post(new Operation().security(List.of(new SecurityRequirement()))),
+//                "/bids/imminent", new PathItem().post(new Operation().security(List.of(new SecurityRequirement()))),
+//                "/bids/category", new PathItem().post(new Operation().security(List.of(new SecurityRequirement()))),
+//                "/health", new PathItem().post(new Operation().security(List.of(new SecurityRequirement()))),
+//                "/hello", new PathItem().post(new Operation().security(List.of(new SecurityRequirement()))),
+//                "/imageTest", new PathItem().post(new Operation().security(List.of(new SecurityRequirement())))
+//        );
 
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes("Bearer Token",
@@ -71,6 +83,18 @@ public class SwaggerConfig {
                         .get(new Operation().security(List.of())))
                 .path("/imageTest", new PathItem()
                         .post(new Operation().security(List.of())))
+                .path("/bids", new PathItem()
+                        .get(new Operation().security(List.of())))
+                .path("/bids/{bidId}", new PathItem()
+                        .get(new Operation().security(List.of())))
+                .path("/bids/real-time", new PathItem()
+                        .get(new Operation().security(List.of())))
+                .path("/bids/imminent", new PathItem()
+                        .get(new Operation().security(List.of())))
+                .path("/bids/category", new PathItem()
+                        .get(new Operation().security(List.of())))
+
+                //"/bids", "/bids/{bidId}", "/bids/real-time", "/bids/imminent", "/bids/category"
                 ;
     }
 

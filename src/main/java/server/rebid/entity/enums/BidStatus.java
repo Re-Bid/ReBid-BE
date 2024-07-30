@@ -6,8 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum BidStatus {
+    WAITING_BID("입찰 대기"),
+    ONGOING_BID("입찰 중"),
     COMPLETE_BID("입찰 완료"),
-    REJECT_BID("유찰")
     ;
 
     private final String description;

@@ -48,7 +48,7 @@ public class BidQueryService {
         if(status.equals("pending")){
             confirmStatus = ConfirmStatus.PENDING_CONFIRM;
         } else if (status.equals("confirm")) {
-            confirmStatus = ConfirmStatus.CONFIRM_CONFIRM;
+            confirmStatus = ConfirmStatus.COMPLETE_CONFIRM;
         } else {
             throw new GeneralException(GlobalErrorCode.BID_KEYWORD_NOT_FOUND);
         }
