@@ -11,6 +11,8 @@ import server.rebid.dto.request.BidRequestDTO;
 import server.rebid.dto.response.BidResponseDTO;
 import server.rebid.service.BidService;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Bid API", description = "경매 관련 API")
@@ -29,10 +31,16 @@ public class BidController {
     @GetMapping("/{bidId}")
     @Operation(summary = "경매 상세 조회 🔑", description = "경매 상세 정보를 조회합니다.")
     public CommonResponse<BidResponseDTO.getBidDetails> getBid(
-            @AuthenticationPrincipal final CustomOAuth2User user,
+            @AuthenticationPrincipal final Optional<CustomOAuth2User> oauth2User,
             @PathVariable final Long bidId
     ) {
-        return CommonResponse.onSuccess(bidService.getBidDetails(user, bidId));
+        if (oauth2User != null) {
+            System.out.println("oauth2User: " + oauth2User.get());
+            CustomOAuth2User user = oauth2User.get();
+            return CommonResponse.onSuccess(bidService.getBidDetails(user, bidId));
+        } else {
+            return CommonResponse.onSuccess(bidService.getBidDetailsWithoutUser(bidId));
+        }
     }
 
     @GetMapping("/real-time")
