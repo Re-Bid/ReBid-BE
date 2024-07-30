@@ -119,7 +119,6 @@ public class BidController {
     @GetMapping("/heart")
     @Operation(summary = "찜한 경매 조회")
     public CommonResponse<getMemberHeart> getMemberHeart(
-            @PathVariable("bidId") Long bidId,
             @AuthenticationPrincipal CustomOAuth2User user
     ){
         getMemberHeart response = bidService.getMemberHeart(user.getMemberId());
