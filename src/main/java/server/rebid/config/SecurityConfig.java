@@ -54,7 +54,7 @@ public class SecurityConfig{
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        return request -> {
+
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedOriginPatterns(Collections.singletonList("*")); // 모든 출처 허용
             //config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://rebid-three.vercel.app"));
@@ -63,9 +63,8 @@ public class SecurityConfig{
             config.setMaxAge(3600L);
 
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", config); // 모든 경로에 대해 CORS 설정 적용
-            return config;
-        };
+            source.registerCorsConfiguration("/**", config);
+            return source;
     }
 
     @Bean
