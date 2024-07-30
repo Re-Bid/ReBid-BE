@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.BidRequestDTO;
+import server.rebid.dto.response.BidHistoryResponseDTO;
 import server.rebid.dto.response.BidResponseDTO;
 import server.rebid.service.BidService;
 
@@ -32,7 +33,20 @@ public class BidController {
             @AuthenticationPrincipal final CustomOAuth2User user,
             @PathVariable final Long bidId
     ) {
+        if (user == null) {
+            // 토큰이 존재하지 않는 경우의 처리
+            return CommonResponse.onSuccess(bidService.getBidDetailsWithOutUser(bidId));
+        }
+        // 토큰이 존재하는 경우의 처리
         return CommonResponse.onSuccess(bidService.getBidDetails(user, bidId));
+    }
+
+    @GetMapping("/{bidId}/histories")
+    @Operation(summary = "경매 입찰 내역 조회", description = "경매 입찰 내역을 조회합니다.")
+    public CommonResponse<BidHistoryResponseDTO.getBidHistories> getBidHistories(
+            @PathVariable final Long bidId
+    ) {
+        return CommonResponse.onSuccess(bidService.getBidHistories(bidId));
     }
 
     @GetMapping("/real-time")
