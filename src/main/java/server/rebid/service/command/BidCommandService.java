@@ -15,7 +15,6 @@ import server.rebid.repository.BidRepository;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class BidCommandService {
 
     private final BidRepository bidRepository;

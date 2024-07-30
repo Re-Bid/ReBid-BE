@@ -6,6 +6,7 @@ import server.rebid.dto.response.AdminBidResponse.BidForAdminDTO;
 import server.rebid.dto.response.AdminBidResponse.BidIdDTO;
 import server.rebid.dto.response.AdminBidResponse.BidsInfo;
 import server.rebid.dto.response.AdminBidResponse.GetBidsByStatusDTO;
+import server.rebid.dto.response.BidHistoryResponseDTO;
 import server.rebid.dto.response.BidResponseDTO;
 import server.rebid.entity.*;
 import server.rebid.entity.enums.BidType;
@@ -136,6 +137,21 @@ public class BidMapper {
     public static BidResponseDTO.addBidHistory toAddBidHistory(BidHistory savedBidHistory) {
         return BidResponseDTO.addBidHistory.builder()
                 .bidId(savedBidHistory.getBid().getId())
+                .build();
+    }
+
+    public static BidHistoryResponseDTO.getBidHistory toGetBidHistory(BidHistory bidHistory) {
+        return BidHistoryResponseDTO.getBidHistory.builder()
+                .bidHistoryId(bidHistory.getId())
+                .price(bidHistory.getPrice())
+                .memberName(bidHistory.getMember().getNickname())
+                .createdAt(bidHistory.getCreatedAt())
+                .build();
+    }
+
+    public static BidHistoryResponseDTO.getBidHistories toGetBidHistories(List<BidHistory> bidHistories) {
+        return BidHistoryResponseDTO.getBidHistories.builder()
+                .bidHistories(bidHistories.stream().map(BidMapper::toGetBidHistory).collect(Collectors.toList()))
                 .build();
     }
 
