@@ -54,7 +54,7 @@ public class SecurityConfig{
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        return request -> {
+
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedOrigins(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
@@ -63,9 +63,8 @@ public class SecurityConfig{
             config.setMaxAge(3600L);
 
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", config); // 모든 경로에 대해 CORS 설정 적용
-            return config;
-        };
+            source.registerCorsConfiguration("/**", config);
+            return source;
     }
 
     @Bean
