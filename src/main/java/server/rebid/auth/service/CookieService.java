@@ -64,7 +64,6 @@ public class CookieService {
         cookie.setDomain(domain);
         cookie.setHttpOnly(false);
         cookie.setSecure(false);
-        cookie.setSameSite("Lax"); // SameSite 설정 추가
         return cookie;
     }
 
