@@ -49,13 +49,6 @@ public class BidController {
         return CommonResponse.onSuccess(bidService.getBidHistories(bidId));
     }
 
-    @GetMapping("/real-time")
-    @Operation(summary = "실시간 경매 목록 조회 🔑", description = "현재 진행중인 실시간 경매 목록을 조회합니다.")
-    public CommonResponse<BidResponseDTO.getBids> getRealTimeBids(
-    ) {
-        return CommonResponse.onSuccess(bidService.getRealTimeBids());
-    }
-
     @GetMapping("/imminent")
     @Operation(summary = "마감 임박 경매 목록 조회 🔑", description = "마감이 임박한 경매 목록을 조회합니다.")
     public CommonResponse<BidResponseDTO.getBids> getImminentBids(

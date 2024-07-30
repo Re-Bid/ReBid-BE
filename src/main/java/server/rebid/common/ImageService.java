@@ -46,4 +46,9 @@ public class ImageService {
         String ext = fileName.substring(fileName.indexOf(".") + 1);
         return UUID.randomUUID().toString() + "." + ext;
     }
+
+//    public NaverResponseDTO.imageCheck checkImage(MultipartFile file) throws IOException {
+//        String imageUrl = uploadImage(file);
+//
+//    }
 }
