@@ -56,11 +56,12 @@ public class SecurityConfig{
     public CorsConfigurationSource corsConfigurationSource() {
 
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Arrays.asList(frontendBaseUrl, backendBaseUrl));
+            config.setAllowedOrigins(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
             config.setAllowCredentials(true);
             config.setMaxAge(3600L);
+
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
             source.registerCorsConfiguration("/**", config);
             return source;
@@ -112,4 +113,5 @@ public class SecurityConfig{
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
+
 }
