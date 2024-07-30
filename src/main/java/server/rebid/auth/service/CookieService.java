@@ -25,6 +25,16 @@ public class CookieService {
         return createTokenCookie(refreshTokenName, token);
     }
 
+    public Cookie addAddressWrittenHeader(boolean isWritten) {
+        Cookie cookie = new Cookie("isAddressWritten", Boolean.toString(isWritten));
+        cookie.setMaxAge(maxAge);
+        cookie.setPath("/");
+        cookie.setDomain(domain);
+        cookie.setHttpOnly(false);
+        cookie.setSecure(false);
+        return cookie;
+    }
+
     public void clearAccessAndRefreshTokenCookie(HttpServletResponse response) {
         clearTokenCookie(accessTokenName, response);
         clearTokenCookie(refreshTokenName, response);
@@ -66,4 +76,6 @@ public class CookieService {
         cookie.setSecure(false);
         response.addCookie(cookie);
     }
+
+
 }

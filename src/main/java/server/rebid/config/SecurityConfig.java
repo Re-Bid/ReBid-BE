@@ -102,7 +102,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/oauth2/authorization/**",
                                 "/login/oauth2/code/**",
-                                "/health", "/hello"
+                                "/health", "/hello", "/bids", "/bids/{bidId}", "/bids/real-time", "/bids/imminent", "/bids/category"
                                 ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session
