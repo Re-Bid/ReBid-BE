@@ -110,7 +110,7 @@ public class BidController {
     public CommonResponse<getMemberHeart> getMemberHeart(
 
     ){
-        getMemberHeart response = bidService.getMemberHeart(user.getMemberId());
+        getMemberHeart response = bidService.getMemberHeart();
         return CommonResponse.onSuccess(response);
     }
 }
