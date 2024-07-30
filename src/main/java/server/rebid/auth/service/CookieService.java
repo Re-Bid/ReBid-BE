@@ -12,7 +12,7 @@ import server.rebid.common.exception.GlobalErrorCode;
 public class CookieService {
     public static final int maxAge=300;
 
-    @Value("${backend.domain}")
+    @Value("${frontend.base_url}")
     public String domain;
     public static final String accessTokenName = "accessToken";
     public static final String refreshTokenName = "refreshToken";
