@@ -32,7 +32,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         OAuth2Attributes oAuth2Attributes = OAuth2Attributes.of(socialType, attributes);
 
-        Member member = memberRepository.findByEmail(oAuth2Attributes.getNickname())
+        Member member = memberRepository.findByEmail(oAuth2Attributes.getEmail())
                 .orElseGet(() -> {
                     Member newMember = Member.builder()
                             .nickname(oAuth2Attributes.getNickname())

@@ -171,4 +171,12 @@ public class BidService {
         Heart savedHeart = heartCommandService.addHeart(heart);
         return HeartMapper.toAddHeart(bid, true);
     }
+
+    public BidResponseDTO.getBidDetails getBidDetailsWithoutUser(Long bidId) {
+        Bid bid = bidQueryService.findById(bidId);
+        List<String> imageUrls = bid.getItemImages().stream()
+                .map(ItemImage::getImageUrl)
+                .collect(Collectors.toList());
+        return BidMapper.toGetBidDetails(bid, imageUrls, false);
+    }
 }
