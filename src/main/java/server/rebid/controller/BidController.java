@@ -4,12 +4,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.BidRequestDTO;
 import server.rebid.dto.response.BidHistoryResponseDTO;
 import server.rebid.dto.response.BidResponseDTO;
+import server.rebid.dto.response.BidResponseDTO.getMemberHeart;
 import server.rebid.dto.response.ChatMemberResponse;
 import server.rebid.service.BidService;
 import server.rebid.service.command.BidHistoryCommandService;
@@ -112,5 +114,15 @@ public class BidController {
             @PathVariable("bidId") Long bidId
     ){
         return bidHistoryCommandService.aiRecommendNextPrice(bidId);
+    }
+
+    @GetMapping("/heart")
+    @Operation(summary = "찜한 경매 조회")
+    public CommonResponse<getMemberHeart> getMemberHeart(
+            @PathVariable("bidId") Long bidId,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ){
+        getMemberHeart response = bidService.getMemberHeart(user.getMemberId());
+        return CommonResponse.onSuccess(response);
     }
 }

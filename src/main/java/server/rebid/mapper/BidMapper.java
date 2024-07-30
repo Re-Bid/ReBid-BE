@@ -152,4 +152,19 @@ public class BidMapper {
                 .build();
     }
 
+    public static BidResponseDTO.getMemberHeart toGetMemberHeart(List<Heart> hearts){
+        return BidResponseDTO.getMemberHeart.builder()
+                .bids(hearts.stream().map(
+                        h -> BidResponseDTO.MemberHeartInfo.builder()
+                                .bidId(h.getBid().getId())
+                                .itemName(h.getBid().getItemName())
+                                .itemIntro(h.getBid().getItemIntro())
+                                .imageUrl(h.getBid().getItemImages().size() >0 ? h.getBid().getItemImages().get(0).getImageUrl() : null)
+                                .startPrice(h.getBid().getStartingPrice())
+                                .build()
+
+                ).toList())
+                .build();
+    }
+
 }

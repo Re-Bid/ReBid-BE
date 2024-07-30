@@ -1,6 +1,5 @@
 package server.rebid.service.command;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +14,6 @@ import server.rebid.common.CommonResponse;
 import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
 import server.rebid.dto.request.ChatRequest;
-import server.rebid.dto.request.ChatType;
 import server.rebid.dto.response.ChatMemberResponse;
 import server.rebid.dto.response.ChatResponse;
 import server.rebid.entity.Bid;
@@ -25,7 +23,6 @@ import server.rebid.repository.BidRepository;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service

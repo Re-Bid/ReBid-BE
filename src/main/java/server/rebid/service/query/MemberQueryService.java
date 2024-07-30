@@ -10,11 +10,10 @@ import server.rebid.dto.response.MemberResponse.OrderInfo;
 import server.rebid.dto.response.MemberResponse.SaleInfo;
 import server.rebid.entity.Bid;
 import server.rebid.entity.BidHistory;
+import server.rebid.entity.Heart;
 import server.rebid.entity.Member;
 import server.rebid.mapper.MemberMapper;
-import server.rebid.repository.BidHistoryRepository;
-import server.rebid.repository.BidRepository;
-import server.rebid.repository.MemberRepository;
+import server.rebid.repository.*;
 
 import java.util.List;
 
@@ -28,6 +27,8 @@ public class MemberQueryService {
     private final BidHistoryRepository bidHistoryRepository;
     private final BidRepository bidRepository;
     private final MemberMapper memberMapper;
+    private final HeartRepository heartRepository;
+    private final HeartQueryRepository heartQueryRepository;
 
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
@@ -58,5 +59,10 @@ public class MemberQueryService {
         List<OrderInfo> orderInfos = memberMapper.mapMemberOrder(orders);
         List<SaleInfo> saleInfos = memberMapper.mapMemberSale(sales);
         return memberMapper.toMyPageDTO(member, orderInfos, saleInfos);
+    }
+
+    public List<Heart> getMemberHeart(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
+        return heartQueryRepository.getMemberHeart(memberId);
     }
 }
