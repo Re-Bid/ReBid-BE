@@ -65,13 +65,6 @@ public enum GlobalErrorCode implements BaseErrorCode {
 
     // Bid + 404 Not Found - 찾을 수 없음
     BID_NOT_FOUND(NOT_FOUND, "BID404_1", "존재하지 않는 경매입니다."),
-    BID_KEYWORD_NOT_FOUND(NOT_FOUND, "BID404_2", "존재하지 않는 검색 키워드 입니다."),
-
-    // Bid + 409 CONFLICT
-    BID_ALREADY_CONFIRM(CONFLICT, "BID409_1", "이미 승인 완료된 경매입니다."),
-    BID_ALREADY_REJECT(CONFLICT, "BID409_2", "이미 승인 거부된 경매입니다."),
-    BID_NOT_REAL_TIME(CONFLICT, "BID409_3", "해당 경매는 실시간 경매가 아닙니다."),
-    BID_NOT_RESERVATION(CONFLICT, "BID409_4", "해당 경매는 기간 경매가 아닙니다."),
 
     //Category + 404 Not Found - 찾을 수 없음
     CATEGORY_NOT_FOUND(NOT_FOUND, "CATEGORY404_1", "존재하지 않는 카테고리입니다."),

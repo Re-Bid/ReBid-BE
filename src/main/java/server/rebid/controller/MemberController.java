@@ -10,7 +10,7 @@ import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.response.MemberResponse.IsMemberAddressWrittenDTO;
 
-import server.rebid.service.query.MemberQueryService;
+import server.rebid.service.MemberQueryService;
 import server.rebid.service.command.MemberCommandService;
 
 import static server.rebid.dto.request.MemberRequest.AddAddressDTO;

@@ -37,7 +37,7 @@ public class BidHistoryRepository {
         QBidHistory bidHistory = QBidHistory.bidHistory;
         QBid bid = QBid.bid;
         return queryFactory.selectFrom(bidHistory)
-                .join(bidHistory.bid).fetchJoin()
+                .join(bid).fetchJoin()
                 .where(bidHistory.member.id.eq(memberId))
                 .orderBy(bidHistory.createdAt.desc())
                 .fetch();

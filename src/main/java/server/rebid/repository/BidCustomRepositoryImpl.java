@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import server.rebid.entity.Bid;
 import server.rebid.entity.QBid;
-import server.rebid.entity.enums.ConfirmStatus;
 
 import java.util.List;
 
@@ -25,16 +24,5 @@ public class BidCustomRepositoryImpl implements BidCustomRepository{
                 .orderBy(bid.createdAt.desc())
                 .fetch();
 
-    }
-
-    @Override
-    public List<Bid> getBidsByStatus(Integer page, Integer size, ConfirmStatus status) {
-        QBid bid = QBid.bid;
-        return queryFactory.selectFrom(bid)
-                .where(bid.confirmStatus.eq(status))
-                .orderBy(bid.createdAt.asc())
-                .offset((long) (page-1) *size)
-                .limit(size)
-                .fetch();
     }
 }

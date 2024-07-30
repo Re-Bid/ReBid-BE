@@ -1,4 +1,4 @@
-package server.rebid.service.query;
+package server.rebid.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,11 +41,6 @@ public class MemberQueryService {
     public IsMemberAddressWrittenDTO isMemberAddressWritten(Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
         return IsMemberAddressWrittenDTO.builder().isAddressWritten(member.getAddress() != null).build();
-    }
-
-    public boolean isMemberAddressWrittenV2(Long memberId){
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
-        return member.getAddress() != null;
     }
 
     public MyPageDTO getMyPage(Long memberId) {

@@ -1,17 +1,15 @@
 package server.rebid.mapper;
 
 import server.rebid.dto.request.BidRequestDTO;
-import server.rebid.dto.response.AdminBidResponse;
-import server.rebid.dto.response.AdminBidResponse.BidForAdminDTO;
-import server.rebid.dto.response.AdminBidResponse.BidIdDTO;
-import server.rebid.dto.response.AdminBidResponse.BidsInfo;
-import server.rebid.dto.response.AdminBidResponse.GetBidsByStatusDTO;
 import server.rebid.dto.response.BidResponseDTO;
 import server.rebid.entity.*;
 import server.rebid.entity.enums.BidType;
 import server.rebid.entity.enums.ConfirmStatus;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class BidMapper {
@@ -90,41 +88,6 @@ public class BidMapper {
                 .build();
     }
 
-    public static GetBidsByStatusDTO toGetBidsByStatusDTO(List<Bid> bids){
-        return GetBidsByStatusDTO.builder()
-                .bids(bids.stream().map(bid ->
-                                BidsInfo.builder()
-                                        .bidId(bid.getId())
-                                        .itemName(bid.getItemName())
-                                        .imageUrl(bid.getItemImages().size() > 0 ? bid.getItemImages().get(0).getImageUrl() : null)
-                                        .startPrice(bid.getStartingPrice())
-                                        .completeStatus(bid.getConfirmStatus().getDescription())
-                                        .build())
-                        .collect(Collectors.toList()))
-                .build();
-    }
-
-    public static BidIdDTO toBidIdDTO(Long modifyBidId){
-        return BidIdDTO.builder()
-                .bidId(modifyBidId)
-                .build();
-    }
-
-    public static BidForAdminDTO toBidForAdminDTO(Bid bid){
-        return BidForAdminDTO.builder()
-                .bidId(bid.getId())
-                .itemName(bid.getItemName())
-                .imageUrl(
-                        bid.getItemImages().stream().map(ItemImage::getImageUrl).toList()
-                )
-                .itemIntro(bid.getItemIntro())
-                .itemDescription(bid.getItemDescription())
-                .startPrice(bid.getStartingPrice())
-                .bidType(bid.getBidType().getDescription())
-                .canReject(bid.getConfirmStatus().equals(ConfirmStatus.PENDING_CONFIRM))
-                .canConfirm(bid.getConfirmStatus().equals(ConfirmStatus.PENDING_CONFIRM))
-                .build();
-    }
     public static BidHistory toBidHistory(Member member, Bid bid, BidRequestDTO.addBidHistory request) {
         return BidHistory.builder()
                 .member(member)
