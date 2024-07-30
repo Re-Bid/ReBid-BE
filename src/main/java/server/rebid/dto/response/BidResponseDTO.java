@@ -38,7 +38,7 @@ public class BidResponseDTO {
         private String itemName;
         private String itemIntro;
         private String itemDescription;
-        private String imageUrl;
+        private List<String> imageUrls;
         private Integer startPrice;
         private Integer currentPrice;
         private LocalDateTime endDate;
@@ -67,5 +67,14 @@ public class BidResponseDTO {
     @AllArgsConstructor
     public static class addBidHistory {
         private Long bidId;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class addHeart {
+        private Long bidId;
+        private Boolean isHeart;
     }
 }

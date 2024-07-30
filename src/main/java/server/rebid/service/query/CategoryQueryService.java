@@ -11,7 +11,7 @@ import server.rebid.repository.CategoryRepository;
 @RequiredArgsConstructor
 public class CategoryQueryService {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public Category findByName(String category) {
         return categoryRepository.findByName(category).orElseThrow(() -> new GeneralException(GlobalErrorCode.CATEGORY_NOT_FOUND));
