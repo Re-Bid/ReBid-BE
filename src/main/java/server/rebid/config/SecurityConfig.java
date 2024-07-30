@@ -53,15 +53,14 @@ public class SecurityConfig{
         );
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfiguration() {
         return request -> {
-            CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Collections.singletonList("*"));
-            config.setAllowedMethods(Collections.singletonList("*"));
-            config.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
-            config.setAllowCredentials(true);
-            config.setMaxAge(3600L);
+            org.springframework.web.cors.CorsConfiguration config =
+                    new org.springframework.web.cors.CorsConfiguration();
+            config.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
+            config.setAllowedMethods(Collections.singletonList("*")); // 모든 메소드 허용
+            config.setAllowedOriginPatterns(Collections.singletonList("*")); // 모든 Origin 허용
+            config.setAllowCredentials(true);   // 인증정보 허용
             return config;
         };
     }
@@ -75,7 +74,7 @@ public class SecurityConfig{
                                 "/login/oauth2/code/**"
                         )
                 )
-                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfiguration()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -97,7 +96,7 @@ public class SecurityConfig{
 //                                ""
 //                        )
 //                )
-                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfiguration()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
