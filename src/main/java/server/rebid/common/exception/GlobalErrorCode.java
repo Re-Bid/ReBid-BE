@@ -44,6 +44,8 @@ public enum GlobalErrorCode implements BaseErrorCode {
     // USER + 409 CONFLICT : Resource 를 찾을 수 없음
     DUPLICATE_PHONE_NUMBER(CONFLICT, "USER409_1", "중복된 전화번호가 존재합니다."),
 
+    // MEMBER + 401 Unauthorized - 권한 없음
+    MEMBER_NOT_AUTHORIZED(UNAUTHORIZED, "MEMBER401_1", "해당 멤버는 권한이 없습니다."),
     // MEMBER + 404 Not Found - 찾을 수 없음
     MEMBER_NOT_FOUND(NOT_FOUND, "MEMBER404_1", "존재하지 않는 멤버입니다."),
     AVAILABLE_PROFILE_NOT_FOUND(NOT_FOUND, "MEMBER404_2", "현재 선택된 멤버 정보가 없습니다."),

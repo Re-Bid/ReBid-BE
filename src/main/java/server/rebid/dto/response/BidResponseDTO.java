@@ -35,6 +35,7 @@ public class BidResponseDTO {
 
         private Long bidId;
         private String bidType;
+        private String memberName;
         private String itemName;
         private String itemIntro;
         private String itemDescription;
