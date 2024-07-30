@@ -42,7 +42,6 @@ public class AdminBidController {
         return CommonResponse.onSuccess(response);
     }
 
-
     @Operation(summary = "승인 대기 제품 반려하기")
     @PutMapping("/{bidId}/reject")
     public CommonResponse<BidIdDTO> rejectBid(

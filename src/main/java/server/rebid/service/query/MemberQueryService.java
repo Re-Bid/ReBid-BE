@@ -9,11 +9,10 @@ import server.rebid.dto.response.MemberResponseDTO.OrderInfo;
 import server.rebid.dto.response.MemberResponseDTO.SaleInfo;
 import server.rebid.entity.Bid;
 import server.rebid.entity.BidHistory;
+import server.rebid.entity.Heart;
 import server.rebid.entity.Member;
 import server.rebid.mapper.MemberMapper;
-import server.rebid.repository.BidHistoryRepository;
-import server.rebid.repository.BidRepository;
-import server.rebid.repository.MemberRepository;
+import server.rebid.repository.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +27,8 @@ public class MemberQueryService {
     private final BidHistoryRepository bidHistoryRepository;
     private final BidRepository bidRepository;
     private final MemberMapper memberMapper;
+    private final HeartRepository heartRepository;
+    private final HeartQueryRepository heartQueryRepository;
 
     public Boolean isMemberExist(Long memberId) {
         return memberRepository.existsById(memberId);
@@ -53,5 +54,10 @@ public class MemberQueryService {
 
     public Member findByEmail(String email) {
         return memberRepository.findByEmail(email).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    public List<Heart> getMemberHeart(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
+        return heartQueryRepository.getMemberHeart(memberId);
     }
 }

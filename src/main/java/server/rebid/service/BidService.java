@@ -210,4 +210,11 @@ public class BidService {
         List<BidHistory> bidHistories = bid.getBidHistories();
         return BidMapper.toGetBidHistories(bidHistories);
     }
+
+    public BidResponseDTO.getMemberHeart getMemberHeart() {
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = memberQueryService.findById(memberId);
+        List<Heart> hearts = memberQueryService.getMemberHeart(memberId);
+        return BidMapper.toGetMemberHeart(hearts);
+    }
 }

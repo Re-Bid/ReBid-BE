@@ -78,4 +78,25 @@ public class BidResponseDTO {
         private Long bidId;
         private Boolean isHeart;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class getMemberHeart{
+        private List<MemberHeartInfo> bids;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberHeartInfo{
+        private Long bidId;
+        private String itemName;
+        private String itemIntro;
+        private String imageUrl;
+        private Integer startPrice;
+    }
+
 }

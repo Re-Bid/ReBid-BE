@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import server.rebid.auth.jwt.JwtAccessDeniedHandler;
 import server.rebid.auth.jwt.JwtAuthenticationEntryPoint;
@@ -22,7 +21,6 @@ import server.rebid.auth.jwt.JwtAuthenticationExceptionHandler;
 import server.rebid.auth.jwt.TokenProvider;
 import server.rebid.auth.security.filter.JwtFilter;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
