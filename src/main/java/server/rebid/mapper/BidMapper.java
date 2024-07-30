@@ -20,7 +20,6 @@ public class BidMapper {
     public static Bid toBid(Member member, BidRequestDTO.addBid request, Category category) {
         return Bid.builder()
                 .itemName(request.getItemName())
-                .bidType(BidType.valueOf(request.getBidType()))
                 .bidCode(generateBidCode())
                 .category(category)
                 .member(member)
@@ -79,7 +78,6 @@ public class BidMapper {
 
         return BidResponseDTO.getBidDetails.builder()
                 .bidId(bid.getId())
-                .bidType(String.valueOf(bid.getBidType()))
                 .itemName(bid.getItemName())
                 .itemIntro(bid.getItemIntro())
                 .itemDescription(bid.getItemDescription())
@@ -121,7 +119,6 @@ public class BidMapper {
                 .itemIntro(bid.getItemIntro())
                 .itemDescription(bid.getItemDescription())
                 .startPrice(bid.getStartingPrice())
-                .bidType(bid.getBidType().getDescription())
                 .canReject(bid.getConfirmStatus().equals(ConfirmStatus.PENDING_CONFIRM))
                 .canConfirm(bid.getConfirmStatus().equals(ConfirmStatus.PENDING_CONFIRM))
                 .build();

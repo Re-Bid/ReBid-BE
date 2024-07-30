@@ -26,9 +26,9 @@ public class BidCommandService {
     public Long rejectBid(Long bidId, MemberRole role, String rejectReason){
         isAdmin(role);
         Bid bid = checkBidPending(bidId);
-        if(!bid.getBidType().equals(BidType.REAL_TIME)){
-            throw new GeneralException(GlobalErrorCode.BID_NOT_REAL_TIME);
-        }
+//        if(!bid.getBidType().equals(BidType.REAL_TIME)){
+//            throw new GeneralException(GlobalErrorCode.BID_NOT_REAL_TIME);
+//        }
         bid.rejectBid(rejectReason);
         return bid.getId();
     }
@@ -36,9 +36,9 @@ public class BidCommandService {
     public Long confirmRealTime(Long bidId, MemberRole role, ConfirmRealTimeBid requestDTO) {
         isAdmin(role);
         Bid bid = checkBidPending(bidId);
-        if(!bid.getBidType().equals(BidType.REAL_TIME)){
-            throw new GeneralException(GlobalErrorCode.BID_NOT_REAL_TIME);
-        }
+//        if(!bid.getBidType().equals(BidType.REAL_TIME)){
+//            throw new GeneralException(GlobalErrorCode.BID_NOT_REAL_TIME);
+//        }
         bid.confirmRealTimeBid(requestDTO.getStartDate());
         return bid.getId();
     }
@@ -46,9 +46,9 @@ public class BidCommandService {
     public Long confirmReservationBid(Long bidId, MemberRole role, ConfirmReservationBid requestDTO) {
         isAdmin(role);
         Bid bid = checkBidPending(bidId);
-        if(!bid.getBidType().equals(BidType.RESERVATION)){
-            throw new GeneralException(GlobalErrorCode.BID_NOT_RESERVATION);
-        }
+//        if(!bid.getBidType().equals(BidType.RESERVATION)){
+//            throw new GeneralException(GlobalErrorCode.BID_NOT_RESERVATION);
+//        }
         bid.confirmReservationBid(requestDTO.getStartDate(), requestDTO.getEndDate());
         return bid.getId();
     }

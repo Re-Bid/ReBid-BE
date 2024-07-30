@@ -83,11 +83,6 @@ public class BidService {
         return BidMapper.toGetBidDetails(bid, imageUrls, isHeart);
     }
 
-    @Transactional(readOnly = true)
-    public BidResponseDTO.getBids getRealTimeBids() {
-        List<Bid> bids = bidQueryService.getRealTimeBids();
-        return BidMapper.toGetBids(bids);
-    }
 
     @Transactional(readOnly = true)
     public BidResponseDTO.getBids getImminentBids() {

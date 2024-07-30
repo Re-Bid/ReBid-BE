@@ -26,10 +26,6 @@ public class BidQueryService {
         return bidRepository.findActiveBids(LocalDateTime.now());
     }
 
-    public List<Bid> getRealTimeBids() {
-        return bidRepository.findRealTimeBids(LocalDateTime.now());
-    }
-
     public List<Bid> getImminentBids() {
         return bidRepository.findImminentBids(LocalDateTime.now());
     }
