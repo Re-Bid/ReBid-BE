@@ -15,7 +15,6 @@ public class CorsConfig implements WebMvcConfigurer {
     private String backendBaseUrl;
 
 
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry
