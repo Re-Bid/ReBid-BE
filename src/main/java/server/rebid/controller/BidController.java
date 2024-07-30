@@ -9,7 +9,10 @@ import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.BidRequestDTO;
 import server.rebid.dto.response.BidResponseDTO;
+import server.rebid.dto.response.ChatMemberResponse;
+import server.rebid.dto.response.ChatResponse;
 import server.rebid.service.BidService;
+import server.rebid.service.command.BidHistoryCommandService;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +21,7 @@ import server.rebid.service.BidService;
 public class BidController {
 
     private final BidService bidService;
+    private final BidHistoryCommandService bidHistoryCommandService;
 
     @GetMapping
     @Operation(summary = "경매 목록 조회 🔑", description = "현재 진행중인 모든 경매 목록을 조회합니다.")
@@ -91,5 +95,16 @@ public class BidController {
             @PathVariable final Long bidId
     ) {
         return CommonResponse.onSuccess(bidService.addHeart(user, bidId));
+    }
+
+    /**
+     * AI가 다음 경매 금액 추천하기
+     */
+    @GetMapping("/{bidId}/AiRecommend")
+    @Operation(summary = "AI가 다음 경매 금액 추천하기")
+    public CommonResponse<ChatMemberResponse> aiRecommendNextPrice(
+            @PathVariable("bidId") Long bidId
+    ){
+        return bidHistoryCommandService.aiRecommendNextPrice(bidId);
     }
 }

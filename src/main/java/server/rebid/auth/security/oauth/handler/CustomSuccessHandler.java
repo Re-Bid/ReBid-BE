@@ -42,8 +42,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addCookie(cookieService.createRefreshTokenCookie(refreshToken));
         response.addCookie(cookieService.addAddressWrittenHeader(isWritten));
 
-
-
         response.sendRedirect(redirectUrl);
     }
 }

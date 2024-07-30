@@ -43,5 +43,13 @@ public class BidHistoryRepository {
                 .fetch();
     }
 
+    public List<BidHistory> getBidHistory(Long bidId){
+        QBidHistory bidHistory = QBidHistory.bidHistory;
+        return queryFactory.selectFrom(bidHistory)
+                .where(bidHistory.bid.id.eq(bidId))
+                .orderBy(bidHistory.price.asc())
+                .fetch();
+    }
+
 
 }
