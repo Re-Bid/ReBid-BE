@@ -40,6 +40,9 @@ public class BidHistoryCommandService {
     @Value("${clova.apigw}")
     private String APIGW;
 
+    @Value("${clova.request.id}")
+    private String requestId;
+
     public BidHistory addBidHistory(BidHistory bidHistory) {
         return bidHistoryRepository.save(bidHistory);
     }
@@ -56,9 +59,9 @@ public class BidHistoryCommandService {
 
         String role = "system";
         String message = "안녕! 너는 온라인 경매사야. 채팅의 시작 메시지는 \"안녕하세요! 저는 당신의 경매를 도와줄 [안녕맨] 입니다!\"로 시작해줘. 너는 사용자에게 제품을 사기 위해 다음 경매 가격을 추천해주는 역할을 가지고 있어." +
-                "너는 \"경매 제품은 " + bid.getItemName() +" 이고, 현재 경매 최고가는 " +  maxPrice + "입니다\"로 말을 하고 경매를 시작해." +
+                "너는 \"경매 제품은 " + bid.getItemName() +" 이고, 현재 경매 최고가는 " +  maxPrice + "입니다\"로 말을 시작해." +
                 "너에게는 지금까지 제품의 경매 가격 내역이 주어질꺼야. 만약 경매 내역이 없으면 \"경매 내역이 없습니다. 경매에 참여해보세요!\"라고 작성해줘." +
-                "만약 경매 가격 내역이 주어지면, 가격의 상승폭을 바탕으로 사용자에 다음 경매 가격으로 얼마가 좋을지 추천해줘."
+                "만약 경매 가격 내역이 주어지면, 가격의 상승폭을 바탕으로 사용자에 다음 경매 가격으로 얼마가 좋을지 추천해줘 말을 꼭 해줘. 그리고 경매 가격 내역을 사용자에게 알려주지는 마"
                 + "현재 경매 가격 내역 : " + priceHistory;
 
         ChatRequest.ChatMessage chatRequest = ChatRequest.ChatMessage.builder()

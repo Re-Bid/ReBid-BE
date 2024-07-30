@@ -84,3 +84,4 @@ cloud:
 clova:
   clovastudio: ${clova.clovastudio}
   apigw: ${clova.apigw}
+  request.id : ${clova.request.id}
