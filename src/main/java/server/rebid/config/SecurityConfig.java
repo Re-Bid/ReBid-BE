@@ -32,8 +32,11 @@ public class SecurityConfig{
     private final CustomSuccessHandler customSuccessHandler;
     private final JwtAuthFilter jwtAuthFilter;
 
-    @Value("${frontend.base-url}")
+    @Value("${frontend.base_url}")
     private String frontendBaseUrl;
+
+    @Value("${backend.base_url")
+    private String backendBaseUrl;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
