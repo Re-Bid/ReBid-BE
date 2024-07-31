@@ -58,4 +58,3 @@ public class CustomOAuth2User implements OAuth2User {
         return oAuth2UserDTO.getRole();
     }
 }
-

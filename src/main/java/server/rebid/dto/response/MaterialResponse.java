@@ -12,6 +12,12 @@ public class MaterialResponse {
     @Getter
     @Builder
     public static class GetTotalMaterial{
+        private List<SimpleMaterialInfo> materials;
+    }
+
+    @Getter
+    @Builder
+    public static class SimpleMaterialInfo{
         private Long materialId;
         private String title;
         private String nickname;

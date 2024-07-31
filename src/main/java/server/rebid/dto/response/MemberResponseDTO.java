@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-public class MemberResponse {
+public class MemberResponseDTO {
 
     @Getter
     @Builder
@@ -20,7 +20,7 @@ public class MemberResponse {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
-    public static class MyPageDTO{
+    public static class myPage{
         private Long memberId;
         private String nickname;
         private List<OrderInfo> orders;
@@ -58,6 +58,25 @@ public class MemberResponse {
     @AllArgsConstructor
     public static class IsMemberAddressWrittenDTO{
         private boolean isAddressWritten;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class signup {
+        private Long memberId;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class login {
+        private Long memberId;
+        private String nickname;
+        private String accessToken;
+        private String refreshToken;
     }
 
 

@@ -104,7 +104,7 @@ public class SecurityConfig{
                                 "/login/oauth2/code/**",
                                 "/health", "/hello", "/bids", "/bids/{bidId}", "/bids/real-time", "/bids/imminent", "/bids/category",
                                 "/bids/{bidId}/histories", "/imageTest", "/bids/{bidId}/AiRecommend"
-                                ).permitAll()
+                        ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

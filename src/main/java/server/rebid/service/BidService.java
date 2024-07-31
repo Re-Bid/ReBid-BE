@@ -97,7 +97,7 @@ public class BidService {
     }
 
     @Transactional(readOnly = true)
-    public getRejectReason getRejectReason(Long bidId) {
+    public getRejectReason getRejectReason(CustomOAuth2User user, Long bidId) {
         Bid bid = bidQueryService.findById(bidId);
         String rejectReason = bid.getCancelReason();
         return BidMapper.toGetRejectReason(rejectReason);
@@ -125,7 +125,9 @@ public class BidService {
      * 승인 대기 중인 제품 조회
      */
     @Transactional(readOnly = true)
-    public GetBidsByStatusDTO getBidsByStatus(Integer page, Integer size, String status, MemberRole role) {
+    public GetBidsByStatusDTO getBidsByStatus(CustomOAuth2User user, Integer page, Integer size, String status) {
+        Member member = memberQueryService.findById(user.getMemberId());
+        MemberRole role = member.getRole();
         List<Bid> bids = bidQueryService.getBidsByStatus(page, size, status, role);
         return BidMapper.toGetBidsByStatusDTO(bids);
     }
@@ -134,7 +136,9 @@ public class BidService {
      * 상품 승인 반려하기
      */
     @Transactional
-    public BidIdDTO rejectBid(Long bidId, MemberRole role, String rejectReason) {
+    public BidIdDTO rejectBid(CustomOAuth2User user, Long bidId, String rejectReason) {
+        Member member = memberQueryService.findById(user.getMemberId());
+        MemberRole role = member.getRole();
         Long modifyBidId = bidCommandService.rejectBid(bidId, role, rejectReason);
         return BidMapper.toBidIdDTO(bidId);
     }
@@ -143,7 +147,9 @@ public class BidService {
      * (실시간) 상품 승인 하기
      */
     @Transactional
-    public BidIdDTO confirmRealTimeBid(Long bidId, MemberRole role, ConfirmRealTimeBid requestDTO) {
+    public BidIdDTO confirmRealTimeBid(CustomOAuth2User user, Long bidId, ConfirmRealTimeBid requestDTO) {
+        Member member = memberQueryService.findById(user.getMemberId());
+        MemberRole role = member.getRole();
         Long modifyBidId = bidCommandService.confirmRealTime(bidId, role, requestDTO);
         return BidMapper.toBidIdDTO(bidId);
     }
@@ -152,7 +158,9 @@ public class BidService {
      * (기간 경매) 상품 승인 하기
      */
     @Transactional
-    public BidIdDTO confirmReservationBid(Long bidId, MemberRole role, AdminBidRequest.ConfirmReservationBid requestDTO) {
+    public BidIdDTO confirmReservationBid(CustomOAuth2User user, Long bidId, AdminBidRequest.ConfirmReservationBid requestDTO) {
+        Member member = memberQueryService.findById(user.getMemberId());
+        MemberRole role = member.getRole();
         Long modifyBidId = bidCommandService.confirmReservationBid(bidId, role, requestDTO);
         return BidMapper.toBidIdDTO(bidId);
     }
@@ -161,7 +169,9 @@ public class BidService {
      * 관리자 제품 상세 화면
      */
     @Transactional(readOnly = true)
-    public BidForAdminDTO getBidForAdmin(Long bidId, MemberRole role) {
+    public BidForAdminDTO getBidForAdmin(CustomOAuth2User user, Long bidId) {
+        Member member = memberQueryService.findById(user.getMemberId());
+        MemberRole role = member.getRole();
         Bid bid = bidQueryService.getBidForAdmin(bidId, role);
         return BidMapper.toBidForAdminDTO(bid);
     }
@@ -196,8 +206,23 @@ public class BidService {
         return BidMapper.toGetBidHistories(bidHistories);
     }
 
-    public BidResponseDTO.getMemberHeart getMemberHeart(Long memberId) {
-        List<Heart> hearts = memberQueryService.getMemberHeart(memberId);
+    public BidResponseDTO.getMemberHeart getMemberHeart(CustomOAuth2User user) {
+        Member member = memberQueryService.findById(user.getMemberId());
+        List<Heart> hearts = memberQueryService.getMemberHeart(member);
         return BidMapper.toGetMemberHeart(hearts);
+    }
+
+    public BidResponseDTO.getBids getCategoryRecommend(Long categoryId) {
+        List<Bid> bids = bidQueryService.getCategoryRecommend(categoryId);
+        return BidMapper.toGetBids(bids);
+    }
+
+    public BidResponseDTO.getBids getPersonalRecommend(Long memberId) {
+        List<Bid> bids = bidQueryService.getPersonalRecommend(memberId);
+        return BidMapper.toGetBids(bids);
+    }
+
+    public void requestBidLearning(){
+        bidCommandService.requestBidLearning();
     }
 }

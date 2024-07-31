@@ -44,6 +44,8 @@ public enum GlobalErrorCode implements BaseErrorCode {
     // USER + 409 CONFLICT : Resource 를 찾을 수 없음
     DUPLICATE_PHONE_NUMBER(CONFLICT, "USER409_1", "중복된 전화번호가 존재합니다."),
 
+    // MEMBER + 401 Unauthorized - 권한 없음
+    MEMBER_NOT_AUTHORIZED(UNAUTHORIZED, "MEMBER401_1", "해당 멤버는 권한이 없습니다."),
     // MEMBER + 404 Not Found - 찾을 수 없음
     MEMBER_NOT_FOUND(NOT_FOUND, "MEMBER404_1", "존재하지 않는 멤버입니다."),
     AVAILABLE_PROFILE_NOT_FOUND(NOT_FOUND, "MEMBER404_2", "현재 선택된 멤버 정보가 없습니다."),
@@ -80,6 +82,12 @@ public enum GlobalErrorCode implements BaseErrorCode {
     //BidHistory + 400 BAD_REQUEST - 잘못된 요청
     INVALID_BID_HISTORY(BAD_REQUEST, "BIDHISTORY400_1", "입찰 금액이 현재 입찰 금액보다 낮습니다."),
     WRONG_BID_ITEM(BAD_REQUEST, "BIDHISTORY400_2", "자신의 제품에는 입찰할 수 없습니다."),
+
+    // Material + 404 Not Found - 찾을 수 없음
+    MATERIAL_NOT_FOUND(NOT_FOUND, "MATERIAL404_1", "존재하지 않는 재료입니다."),
+
+    // Comment + 404 Not Found - 찾을 수 없음
+    COMMENT_NOT_FOUND(NOT_FOUND, "COMMENT404_1", "존재하지 않는 댓글입니다.")
     ;
 
 

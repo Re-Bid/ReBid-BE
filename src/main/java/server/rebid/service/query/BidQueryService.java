@@ -7,9 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
 import server.rebid.entity.Bid;
+import server.rebid.entity.Category;
+import server.rebid.entity.Member;
 import server.rebid.entity.enums.ConfirmStatus;
 import server.rebid.entity.enums.MemberRole;
 import server.rebid.repository.BidRepository;
+import server.rebid.repository.CategoryRepository;
+import server.rebid.repository.MemberRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +25,9 @@ import java.util.List;
 public class BidQueryService {
 
     private final BidRepository bidRepository;
+    private final CategoryRepository categoryRepository;
+    private final MemberRepository memberRepository;
+    private final BidAiRecommendService bidAiRecommendService;
 
     public List<Bid> findAll() {
         return bidRepository.findActiveBids(LocalDateTime.now());
@@ -60,5 +67,23 @@ public class BidQueryService {
         if(!role.equals(MemberRole.ROLE_ADMIN)){
             throw new GeneralException(GlobalErrorCode.AUTHENTICATION_DENIED);
         }
+    }
+
+    public List<Bid> getMemberSales(Long memberId) {
+        return bidRepository.getMemberSales(memberId);
+    }
+
+    public List<Bid> getCategoryRecommend(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new GeneralException(GlobalErrorCode.CATEGORY_NOT_FOUND));
+        String type = "pop";
+        String targetId = category.getId().toString();
+        return bidAiRecommendService.getAitemsRecommend(type, targetId);
+    }
+
+    public List<Bid> getPersonalRecommend(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
+        String type = "personalRecommend";
+        String targetId = memberId.toString();
+        return bidAiRecommendService.getAitemsRecommend(type, targetId);
     }
 }

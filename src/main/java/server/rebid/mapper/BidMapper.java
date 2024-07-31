@@ -51,7 +51,7 @@ public class BidMapper {
         return BidResponseDTO.getBid.builder()
                 .bidId(bid.getId())
                 .itemName(bid.getItemName())
-                .imageUrl(bid.getItemImages().get(0).getImageUrl()) // 첫 번째 이미지만 가져옴
+                .imageUrl(bid.getItemImages().size()>0 ? bid.getItemImages().get(0).getImageUrl() : null) // 첫 번째 이미지만 가져옴
                 .build();
     }
 
@@ -78,6 +78,7 @@ public class BidMapper {
 
         return BidResponseDTO.getBidDetails.builder()
                 .bidId(bid.getId())
+                .memberName(bid.getMember().getNickname())
                 .itemName(bid.getItemName())
                 .itemIntro(bid.getItemIntro())
                 .itemDescription(bid.getItemDescription())

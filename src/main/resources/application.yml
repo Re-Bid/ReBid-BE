@@ -56,16 +56,17 @@ spring:
 
 jwt:
   secret.key: ${jwt.secret.key}
-  access.exp : 18000
-  refresh.exp: 18000
+  authorities-key: authoritiesKey
+  access.exp : 18000000
+  refresh.exp: 18000000
 
 backend:
-  base-url: ${backend_base_url}
+  base_rl: ${backend_base_url}
   domain : ${backend.domain}
 
 frontend:
-  base-url: ${frontend.base_url}
-  auth-redirect-url: ${frontend.auth_redirect_url}
+
+  auth_redirect_url: ${frontend.auth_redirect_url}
 
 cloud:
   aws:
@@ -85,3 +86,5 @@ clova:
   clovastudio: ${clova.clovastudio}
   apigw: ${clova.apigw}
   request.id : ${clova.request.id}
+  accessKeyId: ${clova.accessKeyId}
+  secretKey: ${clova.secretKey}
