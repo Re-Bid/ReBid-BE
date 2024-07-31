@@ -22,6 +22,7 @@ import server.rebid.auth.jwt.JwtAuthenticationExceptionHandler;
 import server.rebid.auth.jwt.TokenProvider;
 import server.rebid.auth.security.filter.JwtFilter;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -61,7 +62,7 @@ public class SecurityConfig{
                     new org.springframework.web.cors.CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
             config.setAllowedMethods(Collections.singletonList("*")); // 모든 메소드 허용
-            config.setAllowedOriginPatterns(Collections.singletonList("*")); // 모든 Origin 허용
+            config.setAllowedOriginPatterns(Arrays.asList("*")); // 모든 Origin 허용
             config.setAllowCredentials(true);   // 인증정보 허용
             return config;
         };
