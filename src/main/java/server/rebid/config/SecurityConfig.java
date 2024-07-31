@@ -27,13 +27,9 @@ import java.util.Collections;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+//@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig{
-
-//    private final CustomOAuth2UserService customOAuth2UserService;
-//    private final CustomSuccessHandler customSuccessHandler;
-//    private final JwtAuthFilter jwtAuthFilter;
 
     @Value("${frontend.base_url}")
     private String frontendBaseUrl;
