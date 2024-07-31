@@ -209,6 +209,7 @@ public class BidService {
 
     public BidResponseDTO.getMemberHeart getMemberHeart(CustomUserDetails user) {
         Member member = memberQueryService.findById(user.getMemberId());
+        System.out.println("member = " + member);
         List<Heart> hearts = memberQueryService.getMemberHeart(member);
         return BidMapper.toGetMemberHeart(hearts);
     }

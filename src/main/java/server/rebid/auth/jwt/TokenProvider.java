@@ -87,7 +87,6 @@ public class TokenProvider {
                 Jwts.builder()
                         .setSubject(member.getId().toString())
                         .claim("authoritiesKey", authorities)
-                        .claim("memberName", member.getNickname())
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
