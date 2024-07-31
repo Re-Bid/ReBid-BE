@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
+import server.rebid.auth.CustomUserDetails;
 import server.rebid.entity.Member;
 import server.rebid.repository.MemberRepository;
 
@@ -30,8 +31,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserDetails createUserDetails(Member member) {
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getRole().toString());
-        return new User(
-                member.getEmail(),
+        return new CustomUserDetails(
+                member.getId(),
                 member.getPassword(),
                 Collections.singleton(grantedAuthority)
         );

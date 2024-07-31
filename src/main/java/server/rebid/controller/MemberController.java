@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+import server.rebid.auth.CustomUserDetails;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.MemberRequestDTO;
 import server.rebid.dto.response.MemberResponseDTO;
@@ -59,8 +61,9 @@ public class MemberController {
     @GetMapping("/myPage")
     @Operation(summary = "마이페이지")
     public CommonResponse<MemberResponseDTO.myPage> getMyPage(
+            @AuthenticationPrincipal CustomUserDetails user
     ){
-        return CommonResponse.onSuccess(memberService.getMyPage());
+        return CommonResponse.onSuccess(memberService.getMyPage(user));
     }
 
     @PostMapping("/login")

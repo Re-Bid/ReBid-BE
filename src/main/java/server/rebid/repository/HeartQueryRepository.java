@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import server.rebid.entity.Heart;
+import server.rebid.entity.Member;
 import server.rebid.entity.QHeart;
 
 import java.util.List;
@@ -22,11 +23,11 @@ public class HeartQueryRepository {
     }
 
 
-    public List<Heart> getMemberHeart(Long memberId) {
+    public List<Heart> getMemberHeart(Member member) {
         QHeart heart = QHeart.heart;
         return queryFactory.selectFrom(heart)
                 .join(heart.bid)
-                .where(heart.member.id.eq(memberId))
+                .where(heart.member.eq(member))
                 .fetch();
     }
 }

@@ -33,6 +33,7 @@ public class MemberQueryService {
     public Boolean isMemberExist(Long memberId) {
         return memberRepository.existsById(memberId);
     }
+
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
     }
@@ -56,8 +57,7 @@ public class MemberQueryService {
         return memberRepository.findByEmail(email).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
     }
 
-    public List<Heart> getMemberHeart(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
-        return heartQueryRepository.getMemberHeart(memberId);
+    public List<Heart> getMemberHeart(Member member) {
+        return heartQueryRepository.getMemberHeart(member);
     }
 }
