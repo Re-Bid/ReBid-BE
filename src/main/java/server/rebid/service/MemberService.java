@@ -38,6 +38,7 @@ public class MemberService {
         // 전체 매핑
         List<MemberResponseDTO.OrderInfo> orderInfos = MemberMapper.mapMemberOrder(orders);
         List<MemberResponseDTO.SaleInfo> saleInfos = MemberMapper.mapMemberSale(sales);
+
         return MemberMapper.toMyPage(member, orderInfos, saleInfos);
     }
 }

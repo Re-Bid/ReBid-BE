@@ -10,7 +10,6 @@ import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.CommentRequest.AddComment;
 import server.rebid.dto.request.MaterialRequest.AddMaterial;
 import server.rebid.dto.response.CommentResponse.CommentId;
-import server.rebid.dto.response.MaterialResponse;
 import server.rebid.dto.response.MaterialResponse.GetMaterial;
 import server.rebid.dto.response.MaterialResponse.GetTotalMaterial;
 import server.rebid.dto.response.MaterialResponse.MaterialId;
@@ -23,9 +22,9 @@ import server.rebid.service.query.MaterialQueryService;
 @RequiredArgsConstructor
 @Tag(name = "재료 도메인")
 public class MaterialController {
-    private MaterialQueryService materialQueryService;
-    private CommentCommandService commentCommandService;
-    private MaterialCommandService materialCommandService;
+    private final MaterialQueryService materialQueryService;
+    private final CommentCommandService commentCommandService;
+    private final MaterialCommandService materialCommandService;
 
     // 전체 재고글 조회
     @GetMapping("")
@@ -36,7 +35,7 @@ public class MaterialController {
     }
 
     // 재고 등록
-    @PostMapping("")
+    @PostMapping("/add")
     public CommonResponse<MaterialId> addMaterial(
         @AuthenticationPrincipal CustomOAuth2User user,
         @RequestBody AddMaterial requestDTO

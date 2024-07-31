@@ -47,6 +47,7 @@ public class MaterialResponse {
         private String profileImage;
         private Integer commentNum;
         private LocalDateTime createdAt;
+        private List<String> imageUrl;
     }
 
     @Getter

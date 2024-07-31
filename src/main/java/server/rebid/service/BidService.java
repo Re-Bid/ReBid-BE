@@ -24,10 +24,7 @@ import server.rebid.service.command.BidCommandService;
 import server.rebid.service.command.BidHistoryCommandService;
 import server.rebid.service.command.HeartCommandService;
 import server.rebid.service.command.ItemImageCommandService;
-import server.rebid.service.query.BidQueryService;
-import server.rebid.service.query.CategoryQueryService;
-import server.rebid.service.query.HeartQueryService;
-import server.rebid.service.query.MemberQueryService;
+import server.rebid.service.query.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,6 +39,7 @@ public class BidService {
     private final BidQueryService bidQueryService;
 
     private final BidHistoryCommandService bidHistoryCommandService;
+    private final BidHistoryQueryService bidHistoryQueryService;
 
     private final MemberQueryService memberQueryService;
 
@@ -80,7 +78,8 @@ public class BidService {
                 .map(ItemImage::getImageUrl)
                 .collect(Collectors.toList());
         boolean isHeart = heartQueryService.existsByMemberAndBid(member, bid);
-        return BidMapper.toGetBidDetails(bid, imageUrls, isHeart);
+        boolean canPurchase = bidHistoryQueryService.getCanPurchase(member, bid);
+        return BidMapper.toGetBidDetails(bid, imageUrls, isHeart, canPurchase);
     }
 
 
@@ -197,7 +196,7 @@ public class BidService {
                 .map(ItemImage::getImageUrl)
                 .collect(Collectors.toList());
 
-        return BidMapper.toGetBidDetails(bid, imageUrls, false);
+        return BidMapper.toGetBidDetails(bid, imageUrls, false, false);
     }
 
     public BidHistoryResponseDTO.getBidHistories getBidHistories(Long bidId) {
