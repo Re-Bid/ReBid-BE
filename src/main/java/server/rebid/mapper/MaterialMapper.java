@@ -4,8 +4,10 @@ import server.rebid.dto.response.MaterialResponse;
 import server.rebid.dto.response.MaterialResponse.GetMaterial;
 import server.rebid.dto.response.MaterialResponse.GetTotalMaterial;
 import server.rebid.entity.Comment;
+import server.rebid.entity.ItemImage;
 import server.rebid.entity.Material;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MaterialMapper {
@@ -34,6 +36,7 @@ public class MaterialMapper {
                                 .nickname(material.getMember().getNickname())
                                 .profileImage(material.getItemImages().size() >0 ? material.getItemImages().get(0).getImageUrl() : null)
                                 .createdAt(material.getCreatedAt())
+                                .imageUrl(material.getItemImages().size() >0 ? material.getItemImages().stream().map(ItemImage::getImageUrl).toList(): Collections.emptyList())
                                 .build()
                 )
                 .comments(

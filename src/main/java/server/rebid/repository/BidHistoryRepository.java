@@ -5,10 +5,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import server.rebid.entity.Bid;
 import server.rebid.entity.BidHistory;
 import server.rebid.entity.QBid;
 import server.rebid.entity.QBidHistory;
+import server.rebid.entity.enums.BidStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -52,4 +55,12 @@ public class BidHistoryRepository {
     }
 
 
+    public BidHistory findLatest(Bid bid) {
+        QBidHistory bidHistory = QBidHistory.bidHistory;
+        return queryFactory.selectFrom(bidHistory)
+                .join(bidHistory.bid).fetchJoin()
+                .where(bidHistory.bid.id.eq(bid.getId()), bidHistory.bid.endDate.loe(LocalDateTime.now()))
+                .orderBy(bidHistory.createdAt.desc())
+                .fetchOne();
+    }
 }

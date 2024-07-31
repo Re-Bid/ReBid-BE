@@ -23,6 +23,7 @@ public class MemberResponseDTO {
     public static class myPage{
         private Long memberId;
         private String nickname;
+        private String email;
         private List<OrderInfo> orders;
         private List<SaleInfo> sales;
     }

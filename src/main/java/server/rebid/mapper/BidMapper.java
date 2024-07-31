@@ -71,7 +71,7 @@ public class BidMapper {
                 .build();
     }
 
-    public static BidResponseDTO.getBidDetails toGetBidDetails(Bid bid, List<String> imageUrls, boolean isHeart) {
+    public static BidResponseDTO.getBidDetails toGetBidDetails(Bid bid, List<String> imageUrls, boolean isHeart, boolean canPurchase) {
         Integer currentPrice = bid.getStartingPrice();
         if (!bid.getBidHistories().isEmpty()) {
             currentPrice = bid.getBidHistories().stream()
@@ -91,6 +91,7 @@ public class BidMapper {
                 .currentPrice(currentPrice)
                 .endDate(bid.getEndDate())
                 .isHeart(isHeart)
+                .canPurchase(canPurchase)
                 .build();
     }
 

@@ -44,6 +44,7 @@ public class BidResponseDTO {
         private Integer currentPrice;
         private LocalDateTime endDate;
         private Boolean isHeart;
+        private Boolean canPurchase;
     }
 
     @Builder

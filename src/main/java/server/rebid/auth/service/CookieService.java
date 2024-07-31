@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CookieService {
-    public static final int maxAge=300;
+    public static final int maxAge=10000;
 
     @Value("${cookie.domain}")
     public String domain;
