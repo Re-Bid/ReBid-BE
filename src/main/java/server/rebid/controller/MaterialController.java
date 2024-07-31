@@ -55,6 +55,7 @@ public class MaterialController {
             @RequestBody AddComment requestDTO
     ){
         // TODO + 사용자 정보
-        CommentId response = commentCommandService.addComment(materialId, requestDTO.getContent());
+        //CommentId response = commentCommandService.addComment(materialId, requestDTO.getContent());
+        return null;
     }
 }
