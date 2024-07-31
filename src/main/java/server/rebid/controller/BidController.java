@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import server.rebid.auth.CustomUserDetails;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.BidRequestDTO;
 import server.rebid.dto.response.BidHistoryResponseDTO;
@@ -33,9 +34,11 @@ public class BidController {
     @GetMapping("/{bidId}")
     @Operation(summary = "경매 상세 조회 🔑", description = "경매 상세 정보를 조회합니다.")
     public CommonResponse<BidResponseDTO.getBidDetails> getBid(
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable final Long bidId
     ) {
-        return CommonResponse.onSuccess(bidService.getBidDetails(bidId));
+        if (user == null) return CommonResponse.onSuccess(bidService.getBidDetailsWithOutUser(bidId));
+        return CommonResponse.onSuccess(bidService.getBidDetails(user, bidId));
     }
 
     @GetMapping("/{bidId}/histories")
@@ -56,13 +59,14 @@ public class BidController {
     @GetMapping("/{bidId}/rejectReason")
 @Operation(summary = "등록 거절 사유 조회 🔑", description = "경매 등록 거절 사유를 조회합니다.")
     public CommonResponse<BidResponseDTO.getRejectReason> getRejectReason(
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable final Long bidId
     ) {
-        return CommonResponse.onSuccess(bidService.getRejectReason(bidId));
+        return CommonResponse.onSuccess(bidService.getRejectReason(user, bidId));
     }
 
     @GetMapping("/category")
-    @Operation(summary = "카테고리 별 경매 목록 조회 🔑", description = "제품 카테고리 별 경매 목록을 조회합니다.")
+    @Operation(summary = "카테고리 별 경매 목록 조회", description = "제품 카테고리 별 경매 목록을 조회합니다.")
     public CommonResponse<BidResponseDTO.getBids> getBidsByCategory(
             @RequestParam final String name
     ) {
@@ -72,26 +76,29 @@ public class BidController {
     @PostMapping("/sell")
     @Operation(summary = "경매 등록하기 🔑", description = "제품을 경매에 등록합니다.")
     public CommonResponse<BidResponseDTO.addBid> addBid(
+            @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody final BidRequestDTO.addBid request
     ) {
-        return CommonResponse.onSuccess(bidService.addBid(request));
+        return CommonResponse.onSuccess(bidService.addBid(user, request));
     }
 
     @PostMapping("/{bidId}/buy")
     @Operation(summary = "경매 입찰하기 🔑", description = "경매 입찰가를 등록합니다.")
     public CommonResponse<BidResponseDTO.addBidHistory> addBidHistory(
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable final Long bidId,
             @RequestBody final BidRequestDTO.addBidHistory request
     ) {
-        return CommonResponse.onSuccess(bidService.addBidHistory(bidId, request));
+        return CommonResponse.onSuccess(bidService.addBidHistory(user, bidId, request));
     }
 
     @PostMapping("/{bidId}/heart")
     @Operation(summary = "경매 찜하기 🔑", description = "경매를 찜합니다.")
     public CommonResponse<BidResponseDTO.addHeart> addBidHistory(
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable final Long bidId
     ) {
-        return CommonResponse.onSuccess(bidService.addHeart(bidId));
+        return CommonResponse.onSuccess(bidService.addHeart(user, bidId));
     }
 
     /**
@@ -108,9 +115,10 @@ public class BidController {
     @GetMapping("/heart")
     @Operation(summary = "찜한 경매 조회")
     public CommonResponse<getMemberHeart> getMemberHeart(
+            @AuthenticationPrincipal CustomUserDetails user
 
     ){
-        getMemberHeart response = bidService.getMemberHeart();
+        getMemberHeart response = bidService.getMemberHeart(user);
         return CommonResponse.onSuccess(response);
     }
 }

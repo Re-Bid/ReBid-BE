@@ -3,7 +3,9 @@ package server.rebid.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import server.rebid.auth.CustomUserDetails;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.CommentRequest.AddComment;
 import server.rebid.dto.request.MaterialRequest.AddMaterial;
@@ -12,7 +14,7 @@ import server.rebid.dto.response.MaterialResponse.GetMaterial;
 import server.rebid.dto.response.MaterialResponse.GetTotalMaterial;
 import server.rebid.dto.response.MaterialResponse.MaterialId;
 import server.rebid.service.command.CommentCommandService;
-import server.rebid.service.command.MaterialQueryService;
+import server.rebid.service.query.MaterialQueryService;
 
 @RestController
 @RequestMapping("/material")
@@ -32,11 +34,11 @@ public class MaterialController {
 
     // 재료 등록, 토큰 필요
     @PostMapping("")
-    public CommonResponse<MaterialId> addMaterial(
+    public CommonResponse addMaterial(
+            @AuthenticationPrincipal CustomUserDetails user,
         @RequestBody AddMaterial requestDTO
     ){
-        // TODO + 사용자 정보
-        return null;
+        return CommonResponse.onSuccess(null);
     }
 
     // 특정 재료글 조회 (w/ 댓글)
@@ -51,6 +53,7 @@ public class MaterialController {
     // 댓글 등록, 토큰 필요
     @PostMapping("/{materialId}/comment")
     public CommonResponse<CommentId> addComment(
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable Long materialId,
             @RequestBody AddComment requestDTO
     ){

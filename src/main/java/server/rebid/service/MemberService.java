@@ -1,9 +1,11 @@
 package server.rebid.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.rebid.auth.CustomUserDetails;
 import server.rebid.auth.SecurityUtil;
 import server.rebid.auth.jwt.TokenDto;
 import server.rebid.dto.request.MemberRequestDTO;
@@ -50,8 +52,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly=true)
-    public MemberResponseDTO.myPage getMyPage() {
-        Long memberId = SecurityUtil.getCurrentMemberId();
+    public MemberResponseDTO.myPage getMyPage(CustomUserDetails user) {
+//        Long memberId = SecurityUtil.getCurrentMemberId();
+        Long memberId = user.getMemberId();
         Member member = memberQueryService.findById(memberId);
         // 주문 제품 확인
         List<BidHistory> orders = bidHistoryQueryService.getMemberOrders(memberId);

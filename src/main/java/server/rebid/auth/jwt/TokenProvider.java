@@ -16,6 +16,7 @@ import io.jsonwebtoken.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import server.rebid.auth.CustomUserDetails;
 import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
 import server.rebid.common.exception.JwtAuthenticationException;
@@ -170,7 +171,11 @@ public class TokenProvider {
                 Arrays.stream(claims.get("authoritiesKey").toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
-        org.springframework.security.core.userdetails.User principal = new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities);
+        CustomUserDetails principal = new CustomUserDetails(
+                Long.parseLong(claims.getSubject()), // Member ID
+                "", // Password
+                authorities
+        );
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 

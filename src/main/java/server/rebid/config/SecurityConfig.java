@@ -54,7 +54,6 @@ public class SecurityConfig{
                 new AntPathRequestMatcher("/imageTest"),
                 new AntPathRequestMatcher("/hello"),
                 new AntPathRequestMatcher("/error"),
-                new AntPathRequestMatcher("/bids/"),
                 new AntPathRequestMatcher("/bids/{bidid}/histories"),
                 new AntPathRequestMatcher("/bids/imminent"),
                 new AntPathRequestMatcher("/bids/category")
@@ -74,54 +73,6 @@ public class SecurityConfig{
         };
     }
 
-//    @Bean
-//    public SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .securityMatchers(auth -> auth
-//                        .requestMatchers(
-//                                "/oauth2/authorization/**",
-//                                "/login/oauth2/code/**"
-//                        )
-//                )
-//                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfiguration()))
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .formLogin(AbstractHttpConfigurer::disable)
-//                .httpBasic(AbstractHttpConfigurer::disable)
-//                .oauth2Login((oauth2) -> oauth2
-//                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-//                                .userService(customOAuth2UserService))
-//                        .successHandler(customSuccessHandler))
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        return http.build();
-//    }
-//
-//    @Bean
-//    public SecurityFilterChain jwtSecurityFilterChain(HttpSecurity http) throws Exception {
-//        http
-////                .securityMatchers(auth -> auth
-////                        .requestMatchers(
-////                                "/member",
-////                                ""
-////                        )
-////                )
-//                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfiguration()))
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .formLogin(AbstractHttpConfigurer::disable)
-//                .httpBasic(AbstractHttpConfigurer::disable)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/oauth2/authorization/**",
-//                                "/login/oauth2/code/**",
-//                                "/health", "/hello", "/bids", "/bids/{bidId}", "/bids/real-time", "/bids/imminent", "/bids/category",
-//                                "/bids/{bidId}/histories", "/imageTest", "/members/**"
-//                                ).permitAll()
-//                        .anyRequest().authenticated())
-//                .sessionManagement((session) -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        return http.build();
-//    }
-
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -137,7 +88,7 @@ public class SecurityConfig{
             new JwtAuthenticationExceptionHandler();
 
     private static final String[] JWT_WHITE_LIST ={
-            "users/email/code/**", "/users/register","/users/login","/users/reissue"
+            "members/email/code/**", "/members/signup","/members/login","/members/reissue", "/admin/**"
     };
 
     /**
@@ -161,6 +112,8 @@ public class SecurityConfig{
 //                            authorize.requestMatchers("/swagger-ui/**").permitAll();
                             authorize.requestMatchers("/members/signup").permitAll();
                             authorize.requestMatchers("/members/login").permitAll();
+                            authorize.requestMatchers("/bids").permitAll();
+                            authorize.requestMatchers("/bids/{bidId}").permitAll();
                             authorize.anyRequest().authenticated();
                         })
                 .exceptionHandling(

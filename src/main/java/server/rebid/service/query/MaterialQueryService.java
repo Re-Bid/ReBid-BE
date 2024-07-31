@@ -1,4 +1,4 @@
-package server.rebid.service.command;
+package server.rebid.service.query;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
