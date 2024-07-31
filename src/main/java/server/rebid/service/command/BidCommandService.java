@@ -12,12 +12,14 @@ import server.rebid.entity.enums.BidType;
 import server.rebid.entity.enums.ConfirmStatus;
 import server.rebid.entity.enums.MemberRole;
 import server.rebid.repository.BidRepository;
+import server.rebid.service.query.BidAiRecommendService;
 
 @Service
 @RequiredArgsConstructor
 public class BidCommandService {
 
     private final BidRepository bidRepository;
+    private final BidAiRecommendService bidAiRecommendService;
 
     public Bid addBid(Bid bid) {
         return bidRepository.save(bid);
@@ -67,5 +69,9 @@ public class BidCommandService {
             throw new GeneralException(GlobalErrorCode.BID_ALREADY_REJECT);
         }
         return bid;
+    }
+
+    public void requestBidLearning() {
+        bidAiRecommendService.requestLearning();
     }
 }

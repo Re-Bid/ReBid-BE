@@ -32,12 +32,15 @@ public class MaterialController {
         return CommonResponse.onSuccess(response);
     }
 
-    // 재료 등록, 토큰 필요
+    // 재고 등록
     @PostMapping("")
     public CommonResponse addMaterial(
-            @AuthenticationPrincipal CustomUserDetails user,
+        @AuthenticationPrincipal CustomUserDetails user,
         @RequestBody AddMaterial requestDTO
     ){
+        // TODO 사용자 정보 필요
+        Long memberId = 1L;
+
         return CommonResponse.onSuccess(null);
     }
 
@@ -58,7 +61,8 @@ public class MaterialController {
             @RequestBody AddComment requestDTO
     ){
         // TODO + 사용자 정보
-        //CommentId response = commentCommandService.addComment(materialId, requestDTO.getContent());
-        return null;
+        Long memberId = 1L;
+        CommentId response = commentCommandService.addComment(memberId, materialId, requestDTO.getContent());
+        return CommonResponse.onSuccess(response);
     }
 }

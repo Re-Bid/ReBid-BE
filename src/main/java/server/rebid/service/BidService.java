@@ -223,4 +223,8 @@ public class BidService {
         List<Bid> bids = bidQueryService.getPersonalRecommend(memberId);
         return BidMapper.toGetBids(bids);
     }
+
+    public void requestBidLearning(){
+        bidCommandService.requestBidLearning();
+    }
 }

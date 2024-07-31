@@ -84,7 +84,10 @@ public enum GlobalErrorCode implements BaseErrorCode {
     WRONG_BID_ITEM(BAD_REQUEST, "BIDHISTORY400_2", "자신의 제품에는 입찰할 수 없습니다."),
 
     // Material + 404 Not Found - 찾을 수 없음
-    MATERIAL_NOT_FOUND(NOT_FOUND, "MATERIAL404_1", "존재하지 않는 재료입니다.")
+    MATERIAL_NOT_FOUND(NOT_FOUND, "MATERIAL404_1", "존재하지 않는 재료입니다."),
+
+    // Comment + 404 Not Found - 찾을 수 없음
+    COMMENT_NOT_FOUND(NOT_FOUND, "COMMENT404_1", "존재하지 않는 댓글입니다.")
     ;
 
 

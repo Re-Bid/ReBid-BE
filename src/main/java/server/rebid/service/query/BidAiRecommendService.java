@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
+import server.rebid.dto.request.AitemsRequest;
 import server.rebid.dto.response.AitemsResponse;
 import server.rebid.entity.Bid;
 import server.rebid.repository.BidRepository;
@@ -20,6 +21,7 @@ import server.rebid.repository.BidRepository;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +41,9 @@ public class BidAiRecommendService {
     @Value("${clova.serviceId}")
     private String serviceId;
 
+    /**
+     * 학습 결과 가져오기
+     */
     public List<Bid> getAitemsRecommend(String type, String targetId){
         RestTemplate restTemplate = new RestTemplate();
 
@@ -86,6 +91,63 @@ public class BidAiRecommendService {
             throw new GeneralException(GlobalErrorCode.REST_TEMPLATE_FAIL2);
         }
     }
+
+    /**
+     * 서비스 학습 요청
+     */
+    public void requestLearning(){
+        RestTemplate restTemplate = new RestTemplate();
+
+        // URL
+        String baseUrl = "https://aitems.apigw.ntruss.com";
+        String plusUrl =String.format("/api/v1/services/%s", serviceId);
+        String url = baseUrl + plusUrl;
+        log.info("url : {}", url);
+
+        // 헤더 설정
+        String timeStampMillis = String.valueOf(Instant.now().toEpochMilli());
+        String signature = makeSignature(plusUrl, timeStampMillis);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        headers.set("x-ncp-iam-access-key", accessKeyId);
+        headers.set("x-ncp-apigw-signature-v2", signature);
+        headers.set("x-ncp-apigw-timestamp", timeStampMillis);
+        log.info("headers: {}", headers);
+
+        AitemsRequest request = AitemsRequest.builder()
+                .type(Collections.singletonList("personalRecommend"))
+                .description(null)
+                .hpConfig(
+                        AitemsRequest.HpConfig.builder()
+                                .is_enabled(false)
+                                .option(null)
+                                .build()
+                )
+                .build();
+
+
+        // 요청 보내기
+        try {
+            HttpEntity<AitemsRequest> entity = new HttpEntity<>(request, headers);
+            ResponseEntity<Void> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    Void.class
+            );
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                log.info("Request 성공");
+            } else {
+                throw new GeneralException(GlobalErrorCode.REST_TEMPLATE_FAIL1);
+            }
+        } catch (Exception e) {
+            log.error("Error during REST call", e);
+            throw new GeneralException(GlobalErrorCode.REST_TEMPLATE_FAIL2);
+        }
+
+    }
+
 
     private String makeSignature(String plusUrl, String timeStamp) {
         String space = " ";					// one space

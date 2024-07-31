@@ -147,4 +147,10 @@ public class BidController {
         getBids response = bidService.getPersonalRecommend(memberId);
         return CommonResponse.onSuccess(response);
     }
+
+//    @PostMapping("/requestLearning")
+//    public CommonResponse<String> requestBidLearning(){
+//        bidService.requestBidLearning();
+//        return CommonResponse.onSuccess("학습 요청 성공");
+//    }
 }
