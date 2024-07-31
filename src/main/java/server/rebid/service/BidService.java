@@ -213,4 +213,9 @@ public class BidService {
         List<Heart> hearts = memberQueryService.getMemberHeart(member);
         return BidMapper.toGetMemberHeart(hearts);
     }
+
+    public BidResponseDTO.getBids getCategoryRecommend(Long categoryId) {
+        List<Bid> bids = bidQueryService.getCategoryRecommend(categoryId);
+        return BidMapper.toGetBids(bids);
+    }
 }

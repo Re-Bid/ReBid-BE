@@ -57,8 +57,8 @@ public class SecurityConfig{
                 new AntPathRequestMatcher("/bids"),
                 new AntPathRequestMatcher("/bids/{bidid}/histories"),
                 new AntPathRequestMatcher("/bids/imminent"),
-                new AntPathRequestMatcher("/bids/category")
-
+                new AntPathRequestMatcher("/bids/category"),
+                new AntPathRequestMatcher("/bids/category/{categoryId}/recommend")
         );
     }
 

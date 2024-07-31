@@ -10,6 +10,7 @@ import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.BidRequestDTO;
 import server.rebid.dto.response.BidHistoryResponseDTO;
 import server.rebid.dto.response.BidResponseDTO;
+import server.rebid.dto.response.BidResponseDTO.getBids;
 import server.rebid.dto.response.BidResponseDTO.getMemberHeart;
 import server.rebid.dto.response.ChatMemberResponse;
 import server.rebid.service.BidService;
@@ -26,7 +27,7 @@ public class BidController {
 
     @GetMapping
     @Operation(summary = "경매 목록 조회 ", description = "현재 진행중인 모든 경매 목록을 조회합니다.")
-    public CommonResponse<BidResponseDTO.getBids> getBids(
+    public CommonResponse<getBids> getBids(
     ) {
         return CommonResponse.onSuccess(bidService.getBids());
     }
@@ -51,7 +52,7 @@ public class BidController {
 
     @GetMapping("/imminent")
     @Operation(summary = "마감 임박 경매 목록 조회 🔑", description = "마감이 임박한 경매 목록을 조회합니다.")
-    public CommonResponse<BidResponseDTO.getBids> getImminentBids(
+    public CommonResponse<getBids> getImminentBids(
     ) {
         return CommonResponse.onSuccess(bidService.getImminentBids());
     }
@@ -67,7 +68,7 @@ public class BidController {
 
     @GetMapping("/category")
     @Operation(summary = "카테고리 별 경매 목록 조회", description = "제품 카테고리 별 경매 목록을 조회합니다.")
-    public CommonResponse<BidResponseDTO.getBids> getBidsByCategory(
+    public CommonResponse<getBids> getBidsByCategory(
             @RequestParam final String name
     ) {
         return CommonResponse.onSuccess(bidService.getBidsByCategory(name));
@@ -119,6 +120,21 @@ public class BidController {
 
     ){
         getMemberHeart response = bidService.getMemberHeart(user);
+        return CommonResponse.onSuccess(response);
+    }
+
+
+    /**
+     * AI가
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/category/{categoryId}/recommend")
+    @Operation(summary = "AI가 카테고리별 인기 추천")
+    public CommonResponse<getBids> getCategoryRecommend(
+            @PathVariable("categoryId") Long categoryId
+    ){
+        getBids response = bidService.getCategoryRecommend(categoryId);
         return CommonResponse.onSuccess(response);
     }
 }
