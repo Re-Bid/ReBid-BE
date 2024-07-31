@@ -61,4 +61,8 @@ public class BidQueryService {
             throw new GeneralException(GlobalErrorCode.AUTHENTICATION_DENIED);
         }
     }
+
+    public List<Bid> getMemberSales(Long memberId) {
+        return bidRepository.getMemberSales(memberId);
+    }
 }
