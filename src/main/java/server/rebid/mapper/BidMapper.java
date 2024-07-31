@@ -42,6 +42,10 @@ public class BidMapper {
         return request.getImageUrls().stream().map(imageUrl -> ItemImage.builder().imageUrl(imageUrl).build()).collect(Collectors.toList());
     }
 
+    public static List<ItemImage> toItemImages(List<String> imageUrl){
+        return imageUrl.stream().map(imageurl -> ItemImage.builder().imageUrl(imageurl).build()).collect(Collectors.toList());
+    }
+
     public static BidResponseDTO.addBid toAddBid(Bid bid) {
         return BidResponseDTO.addBid.builder()
                 .bidId(bid.getId())

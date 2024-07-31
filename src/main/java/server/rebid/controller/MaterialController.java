@@ -10,9 +10,12 @@ import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.CommentRequest.AddComment;
 import server.rebid.dto.request.MaterialRequest.AddMaterial;
 import server.rebid.dto.response.CommentResponse.CommentId;
+import server.rebid.dto.response.MaterialResponse;
 import server.rebid.dto.response.MaterialResponse.GetMaterial;
 import server.rebid.dto.response.MaterialResponse.GetTotalMaterial;
+import server.rebid.dto.response.MaterialResponse.MaterialId;
 import server.rebid.service.command.CommentCommandService;
+import server.rebid.service.command.MaterialCommandService;
 import server.rebid.service.query.MaterialQueryService;
 
 @RestController
@@ -22,6 +25,7 @@ import server.rebid.service.query.MaterialQueryService;
 public class MaterialController {
     private MaterialQueryService materialQueryService;
     private CommentCommandService commentCommandService;
+    private MaterialCommandService materialCommandService;
 
     // 전체 재고글 조회
     @GetMapping("")
@@ -33,14 +37,12 @@ public class MaterialController {
 
     // 재고 등록
     @PostMapping("")
-    public CommonResponse addMaterial(
+    public CommonResponse<MaterialId> addMaterial(
         @AuthenticationPrincipal CustomOAuth2User user,
         @RequestBody AddMaterial requestDTO
     ){
-        // TODO 사용자 정보 필요
-        Long memberId = 1L;
-
-        return CommonResponse.onSuccess(null);
+        MaterialId response = materialCommandService.addMaterial(user.getMemberId(), requestDTO);
+        return CommonResponse.onSuccess(response);
     }
 
     // 특정 재료글 조회 (w/ 댓글)

@@ -2,6 +2,7 @@ package server.rebid.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.MemberRequestDTO;
 import server.rebid.dto.response.MemberResponseDTO;
 import server.rebid.service.MemberService;
+import server.rebid.service.command.MemberCommandService;
 
 @RestController
 @RequestMapping("/members")
@@ -18,6 +20,7 @@ import server.rebid.service.MemberService;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberCommandService memberCommandService;
 
 //    @PostMapping("/signup")
 //    @Operation(summary = "회원가입", description = "회원가입을 합니다.")
@@ -37,16 +40,16 @@ public class MemberController {
 //        return CommonResponse.onSuccess(response);
 //    }
 //
-//     //주소 입력
-//    @PostMapping("/address")
-//    @Operation(summary = "주소 변경")
-//    public CommonResponse<MemberIdDTO> modifyAddress(
-//            @Valid @RequestBody AddAddressDTO requestDTO,
-//            @AuthenticationPrincipal CustomOAuth2User user
-//    ){
-//        MemberIdDTO response = memberCommandService.modifyAddress(user.getMemberId(), requestDTO.getAddress());
-//        return CommonResponse.onSuccess(response);
-//    }
+     //주소 입력
+    @PostMapping("/address")
+    @Operation(summary = "주소 변경")
+    public CommonResponse<MemberResponseDTO.MemberIdDTO> modifyAddress(
+            @Valid @RequestBody MemberRequestDTO.AddAddressDTO requestDTO,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ){
+        MemberResponseDTO.MemberIdDTO response = memberCommandService.modifyAddress(user.getMemberId(), requestDTO.getAddress());
+        return CommonResponse.onSuccess(response);
+    }
 
     // 마이 페이지
     @GetMapping("/myPage")

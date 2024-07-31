@@ -38,10 +38,10 @@ public class MemberMapper {
                         OrderInfo.builder()
                                 .bidId(d.getBid().getId())
                                 .itemName(d.getBid().getItemName())
-                                .imageUrl(d.getBid().getItemImages().get(0).toString())
+                                .imageUrl(d.getBid().getItemImages().get(0).getImageUrl())
                                 .bidTime(d.getBid().getBidStatus().equals(BidStatus.COMPLETE_BID) ? d.getBid().getEndDate() : null)  // 입찰 시간
                                 .bidPrice(d.getPrice())
-                                .bidStatus(d.getBid().getBidStatus().getDescription())
+                                .bidStatus(d.getBid().getBidStatus()!=null? d.getBid().getBidStatus().getDescription(): null)
                                 .build())
                 .toList();
     }
@@ -51,9 +51,9 @@ public class MemberMapper {
                 SaleInfo.builder()
                         .bidId(d.getId())
                         .itemName(d.getItemName())
-                        .imageUrl(d.getItemImages().get(0).toString())
+                        .imageUrl(d.getItemImages().get(0).getImageUrl())
                         .bidTime(d.getBidStatus().equals(BidStatus.COMPLETE_BID) ? d.getEndDate() : null)
-                        .bidStatus(d.getBidStatus().getDescription())
+                        .bidStatus(d.getBidStatus()!=null? d.getBidStatus().getDescription(): null)
                         .build())
                 .toList();
     }
