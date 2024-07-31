@@ -1,14 +1,9 @@
 package server.rebid.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import server.rebid.auth.CustomUserDetails;
-import server.rebid.auth.SecurityUtil;
-import server.rebid.auth.jwt.TokenDto;
-import server.rebid.dto.request.MemberRequestDTO;
+import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.dto.response.MemberResponseDTO;
 import server.rebid.entity.Bid;
 import server.rebid.entity.BidHistory;
@@ -30,29 +25,9 @@ public class MemberService {
     private final BidQueryService bidQueryService;
     private final BidHistoryQueryService bidHistoryQueryService;
 
-    private final BCryptPasswordEncoder encoder;
-
-
-    @Transactional
-    public MemberResponseDTO.signup signup (MemberRequestDTO.signup request) {
-        String password = encoder.encode(request.getPassword());
-        Member member = MemberMapper.toMember(request, password);
-        Member savedMember = memberCommandService.save(member);
-        savedMember.setUserId(String.valueOf(savedMember.getId()));
-        return MemberMapper.toSignup(savedMember);
-    }
-
-    @Transactional
-    public MemberResponseDTO.login login(MemberRequestDTO.login request) {
-        Member member = memberQueryService.findByEmail(request.getEmail());
-
-        TokenDto loginResponse = memberCommandService.login(member, request.getEmail(), request.getPassword());
-
-        return MemberMapper.toLogin(member, loginResponse.getAccessToken(), loginResponse.getRefreshToken());
-    }
 
     @Transactional(readOnly=true)
-    public MemberResponseDTO.myPage getMyPage(CustomUserDetails user) {
+    public MemberResponseDTO.myPage getMyPage(CustomOAuth2User user) {
 //        Long memberId = SecurityUtil.getCurrentMemberId();
         Long memberId = user.getMemberId();
         Member member = memberQueryService.findById(memberId);

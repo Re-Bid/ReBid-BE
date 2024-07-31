@@ -5,14 +5,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import server.rebid.auth.CustomUserDetails;
+import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.CommentRequest.AddComment;
 import server.rebid.dto.request.MaterialRequest.AddMaterial;
 import server.rebid.dto.response.CommentResponse.CommentId;
 import server.rebid.dto.response.MaterialResponse.GetMaterial;
 import server.rebid.dto.response.MaterialResponse.GetTotalMaterial;
-import server.rebid.dto.response.MaterialResponse.MaterialId;
 import server.rebid.service.command.CommentCommandService;
 import server.rebid.service.query.MaterialQueryService;
 
@@ -35,7 +34,7 @@ public class MaterialController {
     // 재고 등록
     @PostMapping("")
     public CommonResponse addMaterial(
-        @AuthenticationPrincipal CustomUserDetails user,
+        @AuthenticationPrincipal CustomOAuth2User user,
         @RequestBody AddMaterial requestDTO
     ){
         // TODO 사용자 정보 필요
@@ -56,13 +55,11 @@ public class MaterialController {
     // 댓글 등록, 토큰 필요
     @PostMapping("/{materialId}/comment")
     public CommonResponse<CommentId> addComment(
-            @AuthenticationPrincipal CustomUserDetails user,
+            @AuthenticationPrincipal CustomOAuth2User user,
             @PathVariable Long materialId,
             @RequestBody AddComment requestDTO
     ){
-        // TODO + 사용자 정보
-        Long memberId = 1L;
-        CommentId response = commentCommandService.addComment(memberId, materialId, requestDTO.getContent());
+        CommentId response = commentCommandService.addComment(user.getMemberId(), materialId, requestDTO.getContent());
         return CommonResponse.onSuccess(response);
     }
 }

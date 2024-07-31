@@ -65,7 +65,7 @@ backend:
   domain : ${backend.domain}
 
 frontend:
-  base_url: ${frontend.base_url}
+
   auth_redirect_url: ${frontend.auth_redirect_url}
 
 cloud:
