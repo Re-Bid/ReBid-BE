@@ -26,10 +26,6 @@ public class BidQueryService {
         return bidRepository.findActiveBids(LocalDateTime.now());
     }
 
-    public List<Bid> getRealTimeBids() {
-        return bidRepository.findRealTimeBids(LocalDateTime.now());
-    }
-
     public List<Bid> getImminentBids() {
         return bidRepository.findImminentBids(LocalDateTime.now());
     }
@@ -64,5 +60,9 @@ public class BidQueryService {
         if(!role.equals(MemberRole.ROLE_ADMIN)){
             throw new GeneralException(GlobalErrorCode.AUTHENTICATION_DENIED);
         }
+    }
+
+    public List<Bid> getMemberSales(Long memberId) {
+        return bidRepository.getMemberSales(memberId);
     }
 }

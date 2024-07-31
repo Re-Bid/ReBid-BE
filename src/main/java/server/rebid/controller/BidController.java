@@ -5,11 +5,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import server.rebid.auth.security.oauth.dto.CustomOAuth2User;
+import server.rebid.auth.CustomUserDetails;
 import server.rebid.common.CommonResponse;
 import server.rebid.dto.request.BidRequestDTO;
+import server.rebid.dto.response.BidHistoryResponseDTO;
 import server.rebid.dto.response.BidResponseDTO;
+import server.rebid.dto.response.BidResponseDTO.getMemberHeart;
+import server.rebid.dto.response.ChatMemberResponse;
 import server.rebid.service.BidService;
+import server.rebid.service.command.BidHistoryCommandService;
 
 import java.util.Optional;
 
@@ -20,9 +24,10 @@ import java.util.Optional;
 public class BidController {
 
     private final BidService bidService;
+    private final BidHistoryCommandService bidHistoryCommandService;
 
     @GetMapping
-    @Operation(summary = "경매 목록 조회 🔑", description = "현재 진행중인 모든 경매 목록을 조회합니다.")
+    @Operation(summary = "경매 목록 조회 ", description = "현재 진행중인 모든 경매 목록을 조회합니다.")
     public CommonResponse<BidResponseDTO.getBids> getBids(
     ) {
         return CommonResponse.onSuccess(bidService.getBids());
@@ -31,23 +36,19 @@ public class BidController {
     @GetMapping("/{bidId}")
     @Operation(summary = "경매 상세 조회 🔑", description = "경매 상세 정보를 조회합니다.")
     public CommonResponse<BidResponseDTO.getBidDetails> getBid(
-            @AuthenticationPrincipal final Optional<CustomOAuth2User> oauth2User,
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable final Long bidId
     ) {
-        if (oauth2User != null) {
-            System.out.println("oauth2User: " + oauth2User.get());
-            CustomOAuth2User user = oauth2User.get();
-            return CommonResponse.onSuccess(bidService.getBidDetails(user, bidId));
-        } else {
-            return CommonResponse.onSuccess(bidService.getBidDetailsWithoutUser(bidId));
-        }
+        if (user == null) return CommonResponse.onSuccess(bidService.getBidDetailsWithOutUser(bidId));
+        return CommonResponse.onSuccess(bidService.getBidDetails(user, bidId));
     }
 
-    @GetMapping("/real-time")
-    @Operation(summary = "실시간 경매 목록 조회 🔑", description = "현재 진행중인 실시간 경매 목록을 조회합니다.")
-    public CommonResponse<BidResponseDTO.getBids> getRealTimeBids(
+    @GetMapping("/{bidId}/histories")
+    @Operation(summary = "경매 입찰 내역 조회", description = "경매 입찰 내역을 조회합니다.")
+    public CommonResponse<BidHistoryResponseDTO.getBidHistories> getBidHistories(
+            @PathVariable final Long bidId
     ) {
-        return CommonResponse.onSuccess(bidService.getRealTimeBids());
+        return CommonResponse.onSuccess(bidService.getBidHistories(bidId));
     }
 
     @GetMapping("/imminent")
@@ -60,13 +61,14 @@ public class BidController {
     @GetMapping("/{bidId}/rejectReason")
 @Operation(summary = "등록 거절 사유 조회 🔑", description = "경매 등록 거절 사유를 조회합니다.")
     public CommonResponse<BidResponseDTO.getRejectReason> getRejectReason(
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable final Long bidId
     ) {
-        return CommonResponse.onSuccess(bidService.getRejectReason(bidId));
+        return CommonResponse.onSuccess(bidService.getRejectReason(user, bidId));
     }
 
     @GetMapping("/category")
-    @Operation(summary = "카테고리 별 경매 목록 조회 🔑", description = "제품 카테고리 별 경매 목록을 조회합니다.")
+    @Operation(summary = "카테고리 별 경매 목록 조회", description = "제품 카테고리 별 경매 목록을 조회합니다.")
     public CommonResponse<BidResponseDTO.getBids> getBidsByCategory(
             @RequestParam final String name
     ) {
@@ -76,7 +78,7 @@ public class BidController {
     @PostMapping("/sell")
     @Operation(summary = "경매 등록하기 🔑", description = "제품을 경매에 등록합니다.")
     public CommonResponse<BidResponseDTO.addBid> addBid(
-            @AuthenticationPrincipal final CustomOAuth2User user,
+            @AuthenticationPrincipal CustomUserDetails user,
             @RequestBody final BidRequestDTO.addBid request
     ) {
         return CommonResponse.onSuccess(bidService.addBid(user, request));
@@ -85,7 +87,7 @@ public class BidController {
     @PostMapping("/{bidId}/buy")
     @Operation(summary = "경매 입찰하기 🔑", description = "경매 입찰가를 등록합니다.")
     public CommonResponse<BidResponseDTO.addBidHistory> addBidHistory(
-            @AuthenticationPrincipal final CustomOAuth2User user,
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable final Long bidId,
             @RequestBody final BidRequestDTO.addBidHistory request
     ) {
@@ -95,9 +97,30 @@ public class BidController {
     @PostMapping("/{bidId}/heart")
     @Operation(summary = "경매 찜하기 🔑", description = "경매를 찜합니다.")
     public CommonResponse<BidResponseDTO.addHeart> addBidHistory(
-            @AuthenticationPrincipal final CustomOAuth2User user,
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable final Long bidId
     ) {
         return CommonResponse.onSuccess(bidService.addHeart(user, bidId));
+    }
+
+    /**
+     * AI가 다음 경매 금액 추천하기
+     */
+    @GetMapping("/{bidId}/AiRecommend")
+    @Operation(summary = "AI가 다음 경매 금액 추천하기")
+    public CommonResponse<ChatMemberResponse> aiRecommendNextPrice(
+            @PathVariable("bidId") Long bidId
+    ){
+        return bidHistoryCommandService.aiRecommendNextPrice(bidId);
+    }
+
+    @GetMapping("/heart")
+    @Operation(summary = "찜한 경매 조회")
+    public CommonResponse<getMemberHeart> getMemberHeart(
+            @AuthenticationPrincipal CustomUserDetails user
+
+    ){
+        getMemberHeart response = bidService.getMemberHeart(user);
+        return CommonResponse.onSuccess(response);
     }
 }

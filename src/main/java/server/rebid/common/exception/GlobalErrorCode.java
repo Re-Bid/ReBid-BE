@@ -17,7 +17,8 @@ public enum GlobalErrorCode implements BaseErrorCode {
     REFRESH_TOKEN_EXPIRED(UNAUTHORIZED, "AUTH401_4", "리프레시 토큰이 만료 되었습니다."),
     AUTHENTICATION_REQUIRED(UNAUTHORIZED, "AUTH401_5", "인증 정보가 유효하지 않습니다."),
     LOGIN_REQUIRED(UNAUTHORIZED, "AUTH401_6", "로그인이 필요한 서비스입니다."),
-
+    REST_TEMPLATE_FAIL1(INTERNAL_SERVER_ERROR, "AUTH401_7", "Rest Template Error"),
+    REST_TEMPLATE_FAIL2(INTERNAL_SERVER_ERROR, "AUTH401_7", "Rest Template Error"),
     // AUTH + 403 Forbidden - 인증 거부
     AUTHENTICATION_DENIED(FORBIDDEN, "AUTH403_1", "인증이 거부 되었습니다."),
 
@@ -43,6 +44,8 @@ public enum GlobalErrorCode implements BaseErrorCode {
     // USER + 409 CONFLICT : Resource 를 찾을 수 없음
     DUPLICATE_PHONE_NUMBER(CONFLICT, "USER409_1", "중복된 전화번호가 존재합니다."),
 
+    // MEMBER + 401 Unauthorized - 권한 없음
+    MEMBER_NOT_AUTHORIZED(UNAUTHORIZED, "MEMBER401_1", "해당 멤버는 권한이 없습니다."),
     // MEMBER + 404 Not Found - 찾을 수 없음
     MEMBER_NOT_FOUND(NOT_FOUND, "MEMBER404_1", "존재하지 않는 멤버입니다."),
     AVAILABLE_PROFILE_NOT_FOUND(NOT_FOUND, "MEMBER404_2", "현재 선택된 멤버 정보가 없습니다."),
@@ -79,6 +82,9 @@ public enum GlobalErrorCode implements BaseErrorCode {
     //BidHistory + 400 BAD_REQUEST - 잘못된 요청
     INVALID_BID_HISTORY(BAD_REQUEST, "BIDHISTORY400_1", "입찰 금액이 현재 입찰 금액보다 낮습니다."),
     WRONG_BID_ITEM(BAD_REQUEST, "BIDHISTORY400_2", "자신의 제품에는 입찰할 수 없습니다."),
+
+    // Material + 404 Not Found - 찾을 수 없음
+    MATERIAL_NOT_FOUND(NOT_FOUND, "MATERIAL404_1", "존재하지 않는 재료입니다.")
     ;
 
 
