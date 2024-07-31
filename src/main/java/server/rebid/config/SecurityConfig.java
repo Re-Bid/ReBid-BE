@@ -103,7 +103,7 @@ public class SecurityConfig{
                         .requestMatchers("/oauth2/authorization/**",
                                 "/login/oauth2/code/**",
                                 "/health", "/hello", "/bids", "/bids/{bidId}", "/bids/real-time", "/bids/imminent", "/bids/category",
-                                "/bids/{bidId}/histories", "/imageTest", "/bids/{bidId}/AiRecommend"
+                                "/bids/{bidId}/histories", "/imageTest", "/bids/{bidId}/AiRecommend", "/bids/category/{categoryId}recommend"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session

@@ -24,6 +24,7 @@ public class Material extends BaseEntity{
 
     @Builder.Default
     @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
     private List<ItemImage> itemImages = new ArrayList<>();  // 상품 이미지 URL
 
 }
