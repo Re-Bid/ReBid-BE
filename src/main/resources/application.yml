@@ -86,5 +86,6 @@ clova:
   clovastudio: ${clova.clovastudio}
   apigw: ${clova.apigw}
   request.id : ${clova.request.id}
-  accessKeyId: ${clova.accessKeyId}
-  secretKey: ${clova.secretKey}
+  accessKeyId: ${clova.access.key.id}
+  secretKey: ${clova.secret.key}
+  serviceId: ${clova.service.id}
