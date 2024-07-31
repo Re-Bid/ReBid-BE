@@ -51,6 +51,6 @@ public class MaterialController {
             @PathVariable Long materialId,
             @RequestBody AddComment requestDTO
     ){
-
+        return null;
     }
 }

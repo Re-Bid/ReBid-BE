@@ -1,20 +1,16 @@
 package server.rebid.auth.service;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
-import server.rebid.common.exception.GeneralException;
-import server.rebid.common.exception.GlobalErrorCode;
 
 @Service
 public class CookieService {
     public static final int maxAge=300;
 
-    @Value("${backend.domain}")
+    @Value("${cookie.domain}")
     public String domain;
     public static final String accessTokenName = "accessToken";
     public static final String refreshTokenName = "refreshToken";
