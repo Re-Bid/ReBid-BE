@@ -54,6 +54,7 @@ public class SecurityConfig{
                 new AntPathRequestMatcher("/imageTest"),
                 new AntPathRequestMatcher("/hello"),
                 new AntPathRequestMatcher("/error"),
+                new AntPathRequestMatcher("/bids"),
                 new AntPathRequestMatcher("/bids/{bidid}/histories"),
                 new AntPathRequestMatcher("/bids/imminent"),
                 new AntPathRequestMatcher("/bids/category")
@@ -112,7 +113,6 @@ public class SecurityConfig{
 //                            authorize.requestMatchers("/swagger-ui/**").permitAll();
                             authorize.requestMatchers("/members/signup").permitAll();
                             authorize.requestMatchers("/members/login").permitAll();
-                            authorize.requestMatchers("/bids").permitAll();
                             authorize.requestMatchers("/bids/{bidId}").permitAll();
                             authorize.anyRequest().authenticated();
                         })
