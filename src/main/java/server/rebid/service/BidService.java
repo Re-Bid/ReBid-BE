@@ -218,4 +218,9 @@ public class BidService {
         List<Bid> bids = bidQueryService.getCategoryRecommend(categoryId);
         return BidMapper.toGetBids(bids);
     }
+
+    public BidResponseDTO.getBids getPersonalRecommend(Long memberId) {
+        List<Bid> bids = bidQueryService.getPersonalRecommend(memberId);
+        return BidMapper.toGetBids(bids);
+    }
 }

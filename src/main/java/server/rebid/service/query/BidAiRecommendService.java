@@ -39,7 +39,7 @@ public class BidAiRecommendService {
     @Value("${clova.serviceId}")
     private String serviceId;
 
-    public List<Bid> getCategoryRecommend(String type, String targetId){
+    public List<Bid> getAitemsRecommend(String type, String targetId){
         RestTemplate restTemplate = new RestTemplate();
 
         // URL

@@ -125,9 +125,7 @@ public class BidController {
 
 
     /**
-     * AI가
-     * @param categoryId
-     * @return
+     * AI가 카테고리별 인기 제품 추천
      */
     @GetMapping("/category/{categoryId}/recommend")
     @Operation(summary = "AI가 카테고리별 인기 추천")
@@ -135,6 +133,18 @@ public class BidController {
             @PathVariable("categoryId") Long categoryId
     ){
         getBids response = bidService.getCategoryRecommend(categoryId);
+        return CommonResponse.onSuccess(response);
+    }
+
+    /**
+     * AI가 개인별 상품 추천
+     */
+    @GetMapping("/personalRecommend")
+    @Operation(summary = "AI가 개인별 상품 추천")
+    public CommonResponse<getBids> getPersonalCommend(){
+        // TODO : 여기 유저 정보 추가 !!!!!
+        Long memberId = 1L;
+        getBids response = bidService.getPersonalRecommend(memberId);
         return CommonResponse.onSuccess(response);
     }
 }

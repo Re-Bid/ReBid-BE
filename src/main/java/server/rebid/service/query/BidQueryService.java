@@ -2,28 +2,19 @@ package server.rebid.service.query;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-import server.rebid.common.CommonResponse;
 import server.rebid.common.exception.GeneralException;
 import server.rebid.common.exception.GlobalErrorCode;
-import server.rebid.dto.request.ChatRequest;
-import server.rebid.dto.response.ChatMemberResponse;
-import server.rebid.dto.response.ChatResponse;
 import server.rebid.entity.Bid;
 import server.rebid.entity.Category;
+import server.rebid.entity.Member;
 import server.rebid.entity.enums.ConfirmStatus;
 import server.rebid.entity.enums.MemberRole;
 import server.rebid.repository.BidRepository;
 import server.rebid.repository.CategoryRepository;
+import server.rebid.repository.MemberRepository;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,6 +26,7 @@ public class BidQueryService {
 
     private final BidRepository bidRepository;
     private final CategoryRepository categoryRepository;
+    private final MemberRepository memberRepository;
     private final BidAiRecommendService bidAiRecommendService;
 
     public List<Bid> findAll() {
@@ -85,6 +77,13 @@ public class BidQueryService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new GeneralException(GlobalErrorCode.CATEGORY_NOT_FOUND));
         String type = "pop";
         String targetId = category.getId().toString();
-        return bidAiRecommendService.getCategoryRecommend(type, targetId);
+        return bidAiRecommendService.getAitemsRecommend(type, targetId);
+    }
+
+    public List<Bid> getPersonalRecommend(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
+        String type = "personalRecommend";
+        String targetId = memberId.toString();
+        return bidAiRecommendService.getAitemsRecommend(type, targetId);
     }
 }
